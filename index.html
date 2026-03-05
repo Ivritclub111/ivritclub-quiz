@@ -1448,6 +1448,7 @@ function showVoiceTask() {
 
     // Scroll to top of voice section and update parent iframe height
     window.scrollTo(0, 0);
+    scrollParentToTop();
     sendHeightToParent();
     setTimeout(sendHeightToParent, 200);
     setTimeout(sendHeightToParent, 600);
@@ -1766,6 +1767,11 @@ function showResults() {
     // Class info is shown at the top of results
 
     document.getElementById('resultsCard').innerHTML = html;
+
+    // Scroll to top and update parent iframe height
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollParentToTop();
+    sendHeightToParent();
 
     // Animate bars
     setTimeout(() => {
