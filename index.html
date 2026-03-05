@@ -1,0 +1,1807 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ivrit Club — Hebrew Level Test</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Hebrew:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #2d2d2d;
+            min-height: 100vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        html {
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .hebrew { font-family: 'Noto Sans Hebrew', 'Inter', sans-serif; direction: rtl; }
+
+        /* === BRAND COLORS === */
+        :root {
+            --coral: #F06C4D;
+            --yellow: #FFBB5A;
+            --light-blue: #8BBCDB;
+            --blue: #2B57A7;
+            --dark: #1a2744;
+        }
+
+        /* === TOP BAR === */
+        .top-bar {
+            background: var(--dark);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+        }
+        .logo-badge {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            background: var(--blue);
+            border: 2.5px solid #fff;
+            border-radius: 8px;
+            padding: 6px 14px 5px;
+            line-height: 1;
+        }
+        .logo-badge .logo-en {
+            font-family: 'Playfair Display', serif;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        .logo-badge .logo-he {
+            font-family: 'Noto Sans Hebrew', sans-serif;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            direction: rtl;
+            margin-top: 1px;
+        }
+        .logo-badge .logo-tagline {
+            color: rgba(255,255,255,0.8);
+            font-size: 5.5px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 3px;
+            white-space: nowrap;
+        }
+        .top-bar .divider { color: rgba(255,255,255,0.2); }
+        .top-bar .subtitle { color: #8899aa; font-size: 14px; }
+
+        /* === PROGRESS === */
+        .progress-container {
+            background: #fff;
+            padding: 15px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 600px;
+            margin: 0 auto 10px;
+            font-size: 13px;
+            color: #888;
+        }
+        .progress-bar {
+            max-width: 600px;
+            margin: 0 auto;
+            height: 6px;
+            background: #e8e8e4;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--yellow), var(--coral));
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+
+        /* === MAIN === */
+        .main {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 30px 20px 100px;
+        }
+
+        /* === SCREENS === */
+        .screen { display: none; }
+        .screen.active { display: block; animation: fadeIn 0.4s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === WELCOME === */
+        .welcome-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 30px 30px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+        .welcome-emoji { font-size: 40px; margin-bottom: 12px; }
+        .welcome-card h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        .welcome-card h1 .highlight { color: var(--coral); }
+        .welcome-card p { color: #666; font-size: 15px; line-height: 1.6; margin-bottom: 6px; }
+        .welcome-features {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        .welcome-feature {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #555;
+        }
+        .welcome-feature .icon { font-size: 20px; }
+
+        /* === QUESTION CARD === */
+        .question-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+        .question-section-badge {
+            display: inline-block;
+            background: #fef3e8;
+            color: var(--coral);
+            font-size: 12px;
+            font-weight: 700;
+            padding: 5px 14px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+        .question-text {
+            font-size: 22px;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+        .question-hebrew {
+            font-family: 'Noto Sans Hebrew', sans-serif;
+            font-size: 26px;
+            font-weight: 600;
+            direction: rtl;
+            text-align: right;
+            color: var(--dark);
+            background: #f8f6f3;
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+        .question-hebrew .blank {
+            display: inline-block;
+            min-width: 80px;
+            border-bottom: 3px solid var(--coral);
+            margin: 0 5px;
+        }
+        .question-context {
+            font-size: 19px;
+            color: #000;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* === OPTIONS === */
+        .options { display: flex; flex-direction: column; gap: 12px; margin-top: 25px; }
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 16px 20px;
+            border: 2px solid #e8e8e4;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 16px;
+        }
+        .option:hover { border-color: var(--coral); background: #fdf8f0; }
+        .option.selected { border-color: var(--coral); background: #fdf8f0; }
+        .option.correct { border-color: #2d8a4e; background: #e8f5e9; }
+        .option.wrong { border-color: #c0392b; background: #fdecea; }
+        .option-letter {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #fef3e8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--coral);
+            flex-shrink: 0;
+        }
+        .option.selected .option-letter { background: var(--coral); color: #fff; }
+        .option.correct .option-letter { background: #2d8a4e; color: #fff; }
+        .option.wrong .option-letter { background: #c0392b; color: #fff; }
+        .option-text { flex: 1; }
+        .option.idk-option { border-style: dashed; color: #999; }
+        .option.idk-option .option-letter { background: #f0f0f0; color: #999; }
+        .option.idk-option.selected { border-color: var(--coral); background: #fdf8f0; color: #333; }
+        .option.idk-option.selected .option-letter { background: var(--coral); color: #fff; }
+        .option-hebrew {
+            font-family: 'Noto Sans Hebrew', sans-serif;
+            direction: rtl;
+            font-size: 20px;
+        }
+
+        /* === FEEDBACK === */
+        .feedback {
+            margin-top: 20px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-size: 15px;
+            display: none;
+        }
+        .feedback.show { display: block; animation: fadeIn 0.3s ease; }
+        .feedback.correct { background: #e8f5e9; color: #2d8a4e; border: 1px solid #a5d6a7; }
+        .feedback.wrong { background: #fdecea; color: #c0392b; border: 1px solid #ef9a9a; }
+        .feedback .emoji { font-size: 18px; margin-right: 8px; }
+
+        /* === VOICE RECORDING === */
+        .voice-section {
+            background: #fff;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            text-align: center;
+        }
+        .voice-prompt {
+            font-family: 'Noto Sans Hebrew', sans-serif;
+            font-size: 24px;
+            direction: rtl;
+            background: #f8f6f3;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            line-height: 1.7;
+            color: var(--dark);
+        }
+        .voice-prompt-english {
+            font-family: 'Inter', sans-serif;
+            direction: ltr;
+            font-size: 14px;
+            color: #888;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        .record-btn {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .record-btn.idle { background: linear-gradient(135deg, var(--yellow), var(--coral)); box-shadow: 0 4px 20px rgba(240,108,77,0.4); }
+        .record-btn.idle:hover { transform: scale(1.05); box-shadow: 0 6px 25px rgba(240,108,77,0.5); }
+        .record-btn.recording {
+            background: #c0392b;
+            box-shadow: 0 0 0 8px rgba(192,57,43,0.15);
+            animation: pulse 1.5s infinite;
+        }
+        .record-btn.done { background: #2d8a4e; box-shadow: 0 4px 20px rgba(45,138,78,0.3); }
+        .record-btn svg { width: 36px; height: 36px; fill: #fff; }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 8px rgba(192,57,43,0.15); }
+            50% { box-shadow: 0 0 0 16px rgba(192,57,43,0.08); }
+        }
+
+        .record-label { font-size: 14px; color: #888; margin-top: 5px; }
+        .record-timer { font-size: 28px; font-weight: 700; color: #c0392b; margin: 10px 0; font-variant-numeric: tabular-nums; }
+
+        .audio-playback {
+            margin: 20px 0;
+            display: none;
+        }
+        .audio-playback.show { display: block; }
+        .audio-playback audio { width: 100%; border-radius: 30px; }
+
+        .voice-tasks { display: flex; flex-direction: column; gap: 15px; margin-top: 15px; }
+        .voice-task {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: #f8f6f3;
+            border-radius: 12px;
+            font-size: 14px;
+            color: #555;
+        }
+        .voice-task .status { font-size: 20px; }
+        .voice-task.completed { background: #e8f5e9; }
+        .voice-task.active { background: #fdf8f0; border: 2px solid var(--coral); }
+
+        /* === BUTTONS === */
+        .btn {
+            display: inline-block;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 17px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--yellow), var(--coral));
+            color: var(--dark);
+            box-shadow: 0 4px 15px rgba(240,108,77,0.3);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(240,108,77,0.4); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-secondary {
+            background: transparent;
+            color: var(--coral);
+            border: 2px solid var(--coral);
+        }
+        .btn-secondary:hover { background: #fdf8f0; }
+        .btn-container { text-align: center; margin-top: 30px; }
+
+        /* Fixed buttons at bottom of screen (for Wix iframe where content gets cut off) */
+        #voiceNextContainer.fixed-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            padding: 16px 24px;
+            margin: 0;
+            box-shadow: 0 -4px 16px rgba(0,0,0,0.12);
+            z-index: 999;
+            display: flex !important;
+            justify-content: center;
+            gap: 14px;
+            border-top: 1px solid #eee;
+        }
+        #voiceNextContainer.fixed-bottom .btn { margin: 0; }
+        #voiceSkipContainer.fixed-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            padding: 16px 24px;
+            margin: 0;
+            box-shadow: 0 -4px 16px rgba(0,0,0,0.12);
+            z-index: 999;
+            display: flex !important;
+            justify-content: center;
+            border-top: 1px solid #eee;
+        }
+        .voice-section.has-fixed-buttons { padding-bottom: 90px !important; }
+
+        /* === RESULTS === */
+        .results-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 50px 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            text-align: center;
+        }
+        .results-level {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 20px 0;
+        }
+        .results-level.bet { background: #e3f2fd; color: #1565c0; }
+        .results-level.gimel { background: #f3e5f5; color: #7b1fa2; }
+        .results-level.dalet { background: #e8f5e9; color: #2e7d32; }
+        .results-level.below { background: #fff3e0; color: #e65100; }
+
+        .results-score {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--dark);
+            margin: 15px 0 5px;
+        }
+        .results-score span { color: var(--coral); }
+        .results-breakdown {
+            max-width: 400px;
+            margin: 30px auto;
+            text-align: left;
+        }
+        .results-breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 15px;
+        }
+        .results-breakdown-item .bar-bg {
+            width: 120px;
+            height: 8px;
+            background: #e8e8e4;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .results-breakdown-item .bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+        .results-message {
+            background: #f8f6f3;
+            padding: 25px;
+            border-radius: 14px;
+            margin: 25px 0;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        /* === NAME INPUT === */
+        .name-input-group {
+            margin: 12px auto 6px;
+            max-width: 350px;
+        }
+        .name-input-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 6px;
+        }
+        .name-input-group input {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .name-input-group input:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px rgba(43,87,167,0.1);
+        }
+        .name-input-group input::placeholder {
+            color: #bbb;
+        }
+        .name-error {
+            color: #c0392b;
+            font-size: 13px;
+            margin-top: 6px;
+            display: none;
+        }
+
+        /* === SUBMIT STATUS === */
+        .submit-status {
+            margin-top: 15px;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 14px;
+            display: none;
+        }
+        .submit-status.sending {
+            display: block;
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        .submit-status.success {
+            display: block;
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .submit-status.error {
+            display: block;
+            background: #fce4ec;
+            color: #c62828;
+        }
+
+        /* === RESPONSIVE — TABLET === */
+        @media (max-width: 768px) {
+            .main { padding: 20px 15px 80px; }
+            .question-card, .voice-section { padding: 30px 25px; }
+            .welcome-card { padding: 35px 25px; }
+            .results-card { padding: 35px 25px; }
+        }
+
+        /* === RESPONSIVE — MOBILE === */
+        @media (max-width: 600px) {
+            body { font-size: 15px; }
+
+            /* Top bar */
+            .top-bar { padding: 10px 12px; gap: 10px; flex-wrap: wrap; }
+            .top-bar .subtitle { font-size: 12px; }
+            .top-bar .top-logo { height: 36px !important; }
+            .welcome-logo { height: 60px !important; }
+            .logo-badge { padding: 4px 10px 3px; }
+            .logo-badge .logo-en { font-size: 15px; }
+            .logo-badge .logo-he { font-size: 12px; }
+
+            /* Progress */
+            .progress-container { padding: 10px 15px; }
+            .progress-info { font-size: 12px; margin-bottom: 8px; }
+
+            /* Main content */
+            .main { padding: 15px 12px 60px; }
+
+            /* Welcome card */
+            .welcome-card { padding: 25px 18px; border-radius: 16px; }
+            .welcome-card h1 { font-size: 24px; line-height: 1.3; }
+            .welcome-card p { font-size: 15px; line-height: 1.6; }
+            .welcome-emoji { font-size: 45px; margin-bottom: 15px; }
+            .welcome-features { flex-direction: column; align-items: center; gap: 12px; margin: 20px 0; }
+            .welcome-feature { font-size: 13px; }
+
+            /* Name inputs */
+            .name-input-group { margin: 15px auto 8px; }
+            .name-input-group label { font-size: 13px; }
+            .name-input-group input { padding: 12px 14px; font-size: 16px; /* 16px prevents iOS zoom */ }
+
+            /* Question card */
+            .question-card { padding: 22px 16px; border-radius: 16px; }
+            .question-section-badge { font-size: 11px; padding: 4px 12px; margin-bottom: 15px; }
+            .question-text { font-size: 18px; line-height: 1.5; margin-bottom: 10px; }
+            .question-hebrew { font-size: 20px; padding: 14px 16px; margin: 15px 0; border-radius: 10px; }
+            .question-context { font-size: 16px; margin-bottom: 15px; }
+
+            /* Options */
+            .options { gap: 10px; margin-top: 18px; }
+            .option { padding: 14px 14px; gap: 12px; font-size: 15px; border-radius: 12px; }
+            .option-letter { width: 32px; height: 32px; font-size: 13px; }
+            .option-hebrew { font-size: 17px; }
+            .option-text { font-size: 14px; }
+
+            /* Feedback */
+            .feedback { font-size: 14px; padding: 12px 16px; border-radius: 10px; }
+
+            /* Buttons */
+            .btn { padding: 14px 30px; font-size: 16px; width: 100%; max-width: 320px; }
+            .btn-container { margin-top: 20px; }
+
+            /* Voice section */
+            .voice-section { padding: 22px 16px 60px; border-radius: 16px; }
+            .voice-section h2 { font-size: 22px !important; }
+            .voice-section p { font-size: 14px !important; }
+            .voice-prompt { font-size: 20px; padding: 18px 14px; }
+            .voice-prompt-english { font-size: 13px; }
+            .record-btn { width: 75px; height: 75px; }
+            .record-btn svg { width: 30px; height: 30px; }
+            .record-timer { font-size: 24px; }
+            .record-label { font-size: 13px; }
+            .voice-task { padding: 10px 12px; font-size: 13px; }
+            .voice-task .status { font-size: 18px; }
+
+            /* Results */
+            .results-card { padding: 25px 18px; border-radius: 16px; }
+            .results-score { font-size: 38px; }
+            .results-level { font-size: 16px; padding: 10px 24px; }
+            .results-message { font-size: 15px; padding: 18px; line-height: 1.7; }
+            .results-breakdown-item { font-size: 14px; }
+            .results-breakdown-item .bar-bg { width: 90px; }
+
+            /* Voice buttons side by side */
+            #voiceNextContainer .btn { width: auto; max-width: none; padding: 12px 20px; font-size: 14px; }
+
+            /* Voice buttons side by side (already in mobile context) */
+        }
+
+        /* === RESPONSIVE — VERY SMALL PHONES === */
+        @media (max-width: 380px) {
+            .main { padding: 10px 8px 50px; }
+            .welcome-card { padding: 20px 14px; }
+            .welcome-card h1 { font-size: 21px; }
+            .question-card { padding: 18px 12px; }
+            .question-text { font-size: 16px; }
+            .question-hebrew { font-size: 18px; padding: 12px; }
+            .question-context { font-size: 14px; }
+            .option { padding: 12px 10px; gap: 10px; font-size: 14px; }
+            .option-letter { width: 28px; height: 28px; font-size: 12px; }
+            .option-hebrew { font-size: 16px; }
+            .btn { padding: 12px 24px; font-size: 15px; }
+            .results-score { font-size: 32px; }
+            .voice-prompt { font-size: 18px; padding: 15px 12px; }
+        }
+
+        /* === IFRAME EMBED SUPPORT === */
+        html {
+            overflow-x: hidden;
+            overflow-y: auto !important;
+            width: 100%;
+            height: auto !important;
+        }
+        body {
+            overflow-x: hidden;
+            overflow-y: auto !important;
+            width: 100%;
+            height: auto !important;
+            min-height: 100vh;
+            -webkit-overflow-scrolling: touch; /* smooth iOS scroll */
+        }
+
+        /* Smooth scrolling for iOS */
+        @supports (-webkit-touch-callout: none) {
+            body { -webkit-text-size-adjust: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <img src="logo.png" alt="Ivrit Club" class="top-logo" style="height:48px; border-radius:6px;">
+        <span class="divider">|</span>
+        <span class="subtitle">Hebrew Level Assessment</span>
+    </div>
+
+    <div class="progress-container" id="progressContainer" style="display:none;">
+        <div class="progress-info">
+            <span id="progressLabel">Question 1 of 15</span>
+            <span id="progressSection">Reading</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+    </div>
+
+    <div class="main">
+
+        <!-- WELCOME SCREEN -->
+        <div class="screen active" id="welcomeScreen">
+            <div class="welcome-card">
+                <div style="margin-bottom:12px;">
+                    <img src="logo.png" alt="Ivrit Club" class="welcome-logo" style="height:60px; border-radius:10px;">
+                </div>
+                <h1>Let's Find Your <span class="highlight">Hebrew Level</span></h1>
+                <p>This quick, fun assessment will help us place you in the perfect group for your level.</p>
+                <p>Don't worry — there are no wrong answers, only helpful ones!</p>
+                <div class="welcome-features">
+                    <div class="welcome-feature"><span class="icon">📝</span> 14 questions</div>
+                    <div class="welcome-feature"><span class="icon">🎤</span> Short voice recording</div>
+                    <div class="welcome-feature"><span class="icon">⏱️</span> ~5 minutes</div>
+                </div>
+                <div id="welcomeFormFields">
+                    <div style="display:flex; gap:10px; max-width:350px; margin:12px auto 6px;">
+                        <div class="name-input-group" style="flex:1; margin:0;">
+                            <label for="studentNameInput">First name *</label>
+                            <input type="text" id="studentNameInput" placeholder="First name" autocomplete="given-name">
+                            <div class="name-error" id="nameError">Required</div>
+                        </div>
+                        <div class="name-input-group" style="flex:1; margin:0;">
+                            <label for="studentLastNameInput">Last name *</label>
+                            <input type="text" id="studentLastNameInput" placeholder="Last name" autocomplete="family-name">
+                            <div class="name-error" id="lastNameError">Required</div>
+                        </div>
+                    </div>
+                    <div class="name-input-group">
+                        <label for="studentEmailInput">Email address</label>
+                        <input type="email" id="studentEmailInput" placeholder="your@email.com" autocomplete="email">
+                    </div>
+                    <div class="name-input-group">
+                        <label for="studentPhoneInput">Phone number *</label>
+                        <input type="tel" id="studentPhoneInput" placeholder="+1 (555) 123-4567" autocomplete="tel">
+                        <div class="name-error" id="phoneError">Please enter your phone number</div>
+                    </div>
+                </div>
+                <div id="welcomeAutoMsg" style="display:none; background:#e8f5e9; border-radius:12px; padding:18px 24px; margin:15px 0; text-align:center;">
+                    <div style="font-size:24px; margin-bottom:8px;">👋</div>
+                    <div style="font-size:18px; font-weight:600; color:#2e7d32;" id="welcomeName"></div>
+                    <div style="font-size:14px; color:#666; margin-top:4px;">Your details are ready. Let's find your level!</div>
+                </div>
+                <div class="btn-container">
+                    <button class="btn btn-primary" onclick="startQuiz()">Let's Go! →</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUESTION SCREEN -->
+        <div class="screen" id="questionScreen">
+            <div class="question-card" id="questionCard"></div>
+            <!-- Auto-advance: buttons hidden, kept for compatibility -->
+            <div class="btn-container" id="checkBtnContainer" style="display:none;"></div>
+            <div class="btn-container" id="nextBtnContainer" style="display:none;"></div>
+        </div>
+
+        <!-- VOICE SCREEN -->
+        <div class="screen" id="voiceScreen">
+            <div class="voice-section">
+                <div class="question-section-badge">🎤 SPEAKING</div>
+                <h2 style="font-family:'Playfair Display',serif; font-size:26px; color:#1a2744; margin-bottom:10px;">
+                    Now let's hear you speak!
+                </h2>
+                <p style="color:#666; font-size:15px; margin-bottom:5px;">
+                    Read the following sentence out loud in Hebrew. Take your time!
+                </p>
+
+                <div class="voice-tasks" id="voiceTasks"></div>
+
+                <div id="voicePromptArea">
+                    <div class="voice-prompt" id="voicePrompt"></div>
+                    <div class="voice-prompt-english" id="voicePromptEn"></div>
+                </div>
+
+                <div id="recordTimer" class="record-timer" style="display:none;">0:00</div>
+
+                <button class="record-btn idle" id="recordBtn" onclick="toggleRecording()">
+                    <svg id="micIcon" viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm-1-9c0-.55.45-1 1-1s1 .45 1 1v6c0 .55-.45 1-1 1s-1-.45-1-1V5z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+                    <svg id="stopIcon" viewBox="0 0 24 24" style="display:none;"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+                    <svg id="checkIcon" viewBox="0 0 24 24" style="display:none;"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                </button>
+                <div class="record-label" id="recordLabel">Tap to record</div>
+
+                <div class="audio-playback" id="audioPlayback">
+                    <audio id="audioPlayer" controls></audio>
+                </div>
+
+                <div class="btn-container" id="voiceNextContainer" style="display:none;">
+                    <button class="btn btn-secondary" onclick="reRecord()" style="margin-right:10px;">Re-record</button>
+                    <button class="btn btn-primary" onclick="nextVoiceTask()">Next →</button>
+                </div>
+
+                <div class="btn-container" id="voiceSkipContainer" style="display:none; margin-top:10px;">
+                    <button class="btn btn-secondary" onclick="skipVoiceTask()" style="opacity:0.7; font-size:0.9em;">
+                        Skip recording →
+                    </button>
+                </div>
+
+                <div id="micErrorMsg" style="display:none; background:#fff3cd; border:1px solid #ffc107; border-radius:10px; padding:12px 16px; margin-top:12px; font-size:0.9em; color:#856404; text-align:center;">
+                    🎤 Microphone not available.<br>
+                    You can skip the recording tasks — it won't affect your score.
+                </div>
+            </div>
+        </div>
+
+        <!-- CAN'T READ SCREEN -->
+        <div class="screen" id="cantReadScreen">
+            <div class="results-card">
+                <div style="font-size:44px; margin-bottom:15px;">📚</div>
+                <h2 style="font-family:'Playfair Display',serif; font-size:24px; color:#1a2744; margin-bottom:15px;">Thank You for Taking the Assessment!</h2>
+                <div class="results-message" style="text-align:left; line-height:1.9;">
+                    <p>Based on your answers, our group program <strong>Ivrit with a Beat</strong> may not be the best fit for your current level. Our group courses are designed for students with intermediate Hebrew skills.</p>
+                    <p style="margin-top:12px;">However, we offer <strong>private Hebrew lessons</strong> that can help you build your skills and prepare you for the group course!</p>
+                    <p style="margin-top:12px;">Once you're ready, you'll be able to join our music club and learn Hebrew through Israeli songs. 🎶</p>
+                </div>
+                <div style="background:#e8f5e9; border-radius:12px; padding:18px 24px; margin:20px 0; text-align:center;">
+                    <div style="font-size:20px; margin-bottom:6px;">📩</div>
+                    <div style="font-size:16px; font-weight:600; color:#2e7d32;">We'll be in touch with details about our private lesson options!</div>
+                </div>
+                <div id="cantReadSubmitStatus" class="submit-status"></div>
+            </div>
+        </div>
+
+        <!-- RESULTS SCREEN -->
+        <div class="screen" id="resultsScreen">
+            <div class="results-card" id="resultsCard"></div>
+        </div>
+
+    </div>
+
+<script>
+// ==========================================
+// QUIZ DATA
+// ==========================================
+
+const questions = [
+    // --- SECTION 1: READING (Can they read Hebrew at all?) ---
+    {
+        section: "Reading",
+        sectionIcon: "📖",
+        text: "Can you read this Hebrew word?",
+        hebrew: "שָׁלוֹם",
+        options: [
+            { text: "Shalom", hebrew: "", correct: true },
+            { text: "Shalem", hebrew: "", correct: false },
+            { text: "Shelet", hebrew: "", correct: false },
+            { text: "I can't read Hebrew", hebrew: "", correct: false, cantRead: true }
+        ],
+        level: 0,
+        feedback_correct: "Great! You can read Hebrew — let's keep going!",
+        feedback_wrong: ""
+    },
+    {
+        section: "Reading",
+        sectionIcon: "📖",
+        text: "Read this sentence. What does it say?",
+        hebrew: "אני גר בתל אביב",
+        options: [
+            { text: "I live in Tel Aviv", correct: true },
+            { text: "I work in Tel Aviv", correct: false },
+            { text: "I was born in Tel Aviv", correct: false }
+        ],
+        level: 1,
+        feedback_correct: "You can read Hebrew without nikud — that's a great sign!",
+        feedback_wrong: ""
+    },
+
+    // --- SECTION 2: BASIC VOCABULARY ---
+    {
+        section: "Vocabulary",
+        sectionIcon: "📚",
+        text: "What does this word mean?",
+        hebrew: "מִשְׁפָּחָה",
+        options: [
+            { text: "Family", correct: true },
+            { text: "Language", correct: false },
+            { text: "Country", correct: false },
+            { text: "School", correct: false }
+        ],
+        level: 1,
+        feedback_correct: "Correct! משפחה = Family",
+        feedback_wrong: "The answer is Family. משפחה is one of the most common Hebrew words."
+    },
+    {
+        section: "Vocabulary",
+        sectionIcon: "📚",
+        text: "What does this word mean?",
+        hebrew: "לְהַצְלִיחַ",
+        options: [
+            { text: "To succeed", correct: true },
+            { text: "To decide", correct: false },
+            { text: "To forget", correct: false },
+            { text: "To return", correct: false }
+        ],
+        level: 2,
+        feedback_correct: "Correct! להצליח = To succeed",
+        feedback_wrong: "The answer is 'To succeed'. This is a Hif'il verb — common in intermediate Hebrew."
+    },
+    {
+        section: "Vocabulary",
+        sectionIcon: "📚",
+        text: "Choose the correct meaning:",
+        hebrew: "לְמָרוֹת שֶׁיָּרַד גֶּשֶׁם, יָצָאנוּ לְטִיּוּל",
+        options: [
+            { text: "Despite the rain, we went on a trip", correct: true },
+            { text: "Because of the rain, we stayed home", correct: false },
+            { text: "Before the rain, we went to work", correct: false },
+            { text: "After the rain stopped, we went outside", correct: false }
+        ],
+        level: 3,
+        feedback_correct: "Excellent! You understood a complex sentence with למרות ש (despite).",
+        feedback_wrong: "למרות ש means 'despite' or 'although' — a Gimel-level structure."
+    },
+
+    // --- SECTION 3: GRAMMAR — PRESENT TENSE ---
+    {
+        section: "Grammar",
+        sectionIcon: "✏️",
+        text: "Fill in the blank with the correct form:",
+        hebrew: "עַכְשָׁיו הִיא _______ סֵפֶר",
+        context: "(Right now she _____ a book)",
+        options: [
+            { text: "קוֹרֵאת", hebrew: "קוראת", correct: true },
+            { text: "קוֹרֵא", hebrew: "קורא", correct: false },
+            { text: "קָרְאָה", hebrew: "קראה", correct: false },
+            { text: "תִּקְרָא", hebrew: "תקרא", correct: false }
+        ],
+        level: 1,
+        feedback_correct: "Right! קוראת is the feminine present tense form.",
+        feedback_wrong: "עכשיו (right now) requires present tense: קוראת — feminine singular."
+    },
+
+    // --- SECTION 4: GRAMMAR — PAST TENSE ---
+    {
+        section: "Grammar",
+        sectionIcon: "✏️",
+        text: "Fill in the blank:",
+        hebrew: "אֶתְמוֹל אֲנִי _______ לַשּׁוּק",
+        context: "(Yesterday I _____ to the market)",
+        options: [
+            { text: "הָלַכְתִּי", hebrew: "הלכתי", correct: true },
+            { text: "הוֹלֵךְ", hebrew: "הולך", correct: false },
+            { text: "אֵלֵךְ", hebrew: "אלך", correct: false },
+            { text: "לָלֶכֶת", hebrew: "ללכת", correct: false }
+        ],
+        level: 2,
+        feedback_correct: "You know past tense! הלכתי = I went.",
+        feedback_wrong: "אתמול (yesterday) requires past tense: הלכתי (I went)."
+    },
+    {
+        section: "Grammar",
+        sectionIcon: "✏️",
+        text: "Choose the correct conjugation:",
+        hebrew: "הֵם _______ אֶת הַבַּיִת בִּשְׁנַת 2010",
+        context: "(They _____ the house in 2010)",
+        options: [
+            { text: "קָנוּ", hebrew: "קנו", correct: true },
+            { text: "קוֹנִים", hebrew: "קונים", correct: false },
+            { text: "קָנָה", hebrew: "קנה", correct: false },
+            { text: "יִקְנוּ", hebrew: "יקנו", correct: false }
+        ],
+        level: 2,
+        feedback_correct: "Correct! קנו = They bought (past tense, plural).",
+        feedback_wrong: "With בשנת 2010, we need past tense plural: קנו (they bought)."
+    },
+
+    // --- SECTION 5: GRAMMAR — FUTURE + ADVANCED ---
+    {
+        section: "Grammar",
+        sectionIcon: "✏️",
+        text: "Fill in the correct verb form:",
+        hebrew: "מָחָר אֲנַחְנוּ _______ לִירוּשָׁלַיִם",
+        context: "(Tomorrow we _____ to Jerusalem)",
+        options: [
+            { text: "נִסַּע", hebrew: "ניסע", correct: true },
+            { text: "נָסַעְנוּ", hebrew: "נסענו", correct: false },
+            { text: "נוֹסְעִים", hebrew: "נוסעים", correct: false },
+            { text: "לִנְסוֹעַ", hebrew: "לנסוע", correct: false }
+        ],
+        level: 3,
+        feedback_correct: "You know future tense! ניסע = We will travel.",
+        feedback_wrong: "מחר (tomorrow) requires future tense: ניסע (we will travel)."
+    },
+    {
+        section: "Grammar",
+        sectionIcon: "✏️",
+        text: "Choose the correct form:",
+        hebrew: "הַיְּלָדִים _______ בַּפָּארְק כָּל יוֹם, אַבָל אֶתְמוֹל הֵם _______ בַּבַּיִת",
+        context: "(The children _____ in the park every day, but yesterday they _____ at home)",
+        options: [
+            { text: "משחקים ... נשארו", hebrew: "מְשַׂחֲקִים ... נִשְׁאֲרוּ", correct: true },
+            { text: "שיחקו ... נשארים", hebrew: "שִׂיחֲקוּ ... נִשְׁאָרִים", correct: false },
+            { text: "ישחקו ... נשארו", hebrew: "יְשַׂחֲקוּ ... נִשְׁאֲרוּ", correct: false },
+            { text: "משחקים ... נשארים", hebrew: "מְשַׂחֲקִים ... נִשְׁאָרִים", correct: false }
+        ],
+        level: 3,
+        feedback_correct: "Excellent! You can switch between present and past tense in context.",
+        feedback_wrong: "כל יום needs present (משחקים), אתמול needs past (נשארו)."
+    },
+
+    // --- SECTION 6: READING COMPREHENSION ---
+    {
+        section: "Comprehension",
+        sectionIcon: "🔍",
+        text: "Read the text and answer:",
+        hebrew: "דָּוִד גָּר בְּחֵיפָה. הוּא עוֹבֵד בְּבֵית חוֹלִים. כָּל בּוֹקֶר הוּא קָם מוּקְדָם וְנוֹסֵעַ לָעֲבוֹדָה בָּאוֹטוֹבּוּס.",
+        context: "Where does David work?",
+        options: [
+            { text: "In a hospital", correct: true },
+            { text: "In a school", correct: false },
+            { text: "In an office", correct: false },
+            { text: "In a restaurant", correct: false }
+        ],
+        level: 1,
+        feedback_correct: "Correct! בית חולים = Hospital.",
+        feedback_wrong: "בית חולים means hospital. David works in a hospital."
+    },
+    {
+        section: "Comprehension",
+        sectionIcon: "🔍",
+        text: "Read and answer:",
+        hebrew: "אֶתְמוֹל הָלַכְנוּ לְמִסְעָדָה חֲדָשָׁה. הִזְמַנּוּ סָלָט, דָּג וְיַיִן. הָאוֹכֶל הָיָה טָעִים מְאוֹד, אֲבָל הַשֵּׁירוּת הָיָה אִיטִּי. בַּסּוֹף הֶחֶשְׁבּוֹן הִפְתִּיעַ אוֹתָנוּ כִּי הוּא הָיָה מְאוֹד גָּבוֹהַּ.",
+        context: "What were the problems at the restaurant?",
+        options: [
+            { text: "The service was slow and the bill was surprisingly high", correct: true },
+            { text: "The food was not tasty", correct: false },
+            { text: "They didn't have wine", correct: false },
+            { text: "The restaurant was closed", correct: false }
+        ],
+        level: 3,
+        feedback_correct: "Correct! The service was slow (השֵׁירוּת הָיָה אִיטִּי) and the bill was surprisingly high (הֶחֶשְׁבּוֹן הִפְתִּיעַ אוֹתָנוּ).",
+        feedback_wrong: "The text says: the food was tasty (טעים), but the service was slow (השֵׁירוּת הָיָה אִיטִּי) and the bill was surprisingly high (הֶחֶשְׁבּוֹן הִפְתִּיעַ אוֹתָנוּ)."
+    },
+
+    // --- SECTION 7: ADVANCED ---
+    {
+        section: "Advanced",
+        sectionIcon: "🎯",
+        text: "What does this expression mean?",
+        hebrew: "הוּא תָּמִיד מַכְנִיס אֶת הָאַף בְּעִנְיָנִים שֶׁל אֲחֵרִים",
+        options: [
+            { text: "He always meddles in other people's business", correct: true },
+            { text: "He always smells other people's food", correct: false },
+            { text: "He always follows other people", correct: false },
+            { text: "He is always curious about news", correct: false }
+        ],
+        level: 4,
+        feedback_correct: "You know Hebrew idioms! מכניס את האף = sticking one's nose in (meddling).",
+        feedback_wrong: "מכניס את האף literally means 'puts his nose in' — it's an idiom for meddling."
+    },
+    {
+        section: "Advanced",
+        sectionIcon: "🎯",
+        text: "Choose the sentence with correct grammar:",
+        hebrew: "",
+        options: [
+            { text: "אילו היית מקשיב, היית מבין", hebrew: "אִלּוּ הָיִיתָ מַקְשִׁיב, הָיִיתָ מֵבִין", correct: true },
+            { text: "אם היית מקשיב, אתה מבין", hebrew: "אִם הָיִיתָ מַקְשִׁיב, אַתָּה מֵבִין", correct: false },
+            { text: "אילו אתה מקשיב, אתה היית מבין", hebrew: "אִלּוּ אַתָּה מַקְשִׁיב, אַתָּה הָיִיתָ מֵבִין", correct: false },
+            { text: "אם היית מקשיב, היית מבין", hebrew: "אִם הָיִיתָ מַקְשִׁיב, הָיִיתָ מֵבִין", correct: false }
+        ],
+        level: 4,
+        feedback_correct: "Impressive! You recognize the counterfactual conditional with אילו.",
+        feedback_wrong: "אילו (if/had) is used for hypotheticals: 'Had you listened, you would have understood.'"
+    }
+];
+
+const voiceTasks = [
+    {
+        prompt: "שלום, קוראים לי... אני גר/ה ב...",
+        english: "Say: Hello, my name is... I live in...",
+        level: "basic"
+    },
+    {
+        prompt: "ספר/י לנו במשפט אחד — למה את/ה רוצה ללמוד עברית?",
+        english: "Tell us in one sentence — why do you want to learn Hebrew?",
+        level: "open"
+    },
+    {
+        prompt: "ספר/י על משהו שעשית בשבוע שעבר",
+        english: "Tell us about something you did last week (use past tense)",
+        level: "intermediate"
+    }
+];
+
+// ==========================================
+// STATE
+// ==========================================
+let currentQuestion = 0;
+let score = 0;
+let sectionScores = { Reading: {correct:0, total:0}, Vocabulary: {correct:0, total:0}, Grammar: {correct:0, total:0}, Comprehension: {correct:0, total:0}, Advanced: {correct:0, total:0} };
+let answered = false;
+let currentVoiceTask = 0;
+let mediaRecorder = null;
+let audioChunks = [];
+let recordings = [];
+let timerInterval = null;
+let recordingSeconds = 0;
+let studentName = '';
+let studentEmail = '';
+let studentPhone = '';
+let studentLastName = '';
+let userAnswers = [];
+
+// Read URL parameters (passed from Wix landing page form)
+const urlParams = new URLSearchParams(window.location.search);
+const fromLandingPage = urlParams.get('name') && urlParams.get('email');
+
+if (urlParams.get('name')) {
+    document.getElementById('studentNameInput').value = urlParams.get('name');
+}
+if (urlParams.get('lastname')) {
+    studentLastName = urlParams.get('lastname');
+    const lastNameInput = document.getElementById('studentLastNameInput');
+    if (lastNameInput) lastNameInput.value = urlParams.get('lastname');
+}
+if (urlParams.get('email')) {
+    studentEmail = urlParams.get('email');
+    document.getElementById('studentEmailInput').value = urlParams.get('email');
+}
+if (urlParams.get('phone')) {
+    studentPhone = urlParams.get('phone');
+    document.getElementById('studentPhoneInput').value = urlParams.get('phone');
+}
+
+// If coming from landing page, show welcome message and hide form fields
+if (fromLandingPage) {
+    document.getElementById('welcomeFormFields').style.display = 'none';
+    document.getElementById('welcomeAutoMsg').style.display = 'block';
+    const fullName = urlParams.get('name') + (studentLastName ? ' ' + studentLastName : '');
+    document.getElementById('welcomeName').textContent = 'Welcome, ' + fullName + '!';
+}
+
+// ==========================================
+// GOOGLE APPS SCRIPT URL (replace after setup)
+// ==========================================
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwbNNBuA0GfZmx5L_FbrGRpvAUY11BySEOJCo3YIaGa-Ix_uBGhEIfuvjd6RU42CAbCzA/exec';
+
+// ==========================================
+// QUIZ LOGIC
+// ==========================================
+
+function startQuiz() {
+    const nameInput = document.getElementById('studentNameInput');
+    const nameError = document.getElementById('nameError');
+    const lastNameInput = document.getElementById('studentLastNameInput');
+    const lastNameError = document.getElementById('lastNameError');
+    const phoneInput = document.getElementById('studentPhoneInput');
+    const phoneError = document.getElementById('phoneError');
+
+    const name = nameInput.value.trim();
+    const lastName = lastNameInput ? lastNameInput.value.trim() : '';
+    const phone = phoneInput ? phoneInput.value.trim() : '';
+
+    let hasError = false;
+
+    // Validate first name
+    if (!name) {
+        nameError.style.display = 'block';
+        nameInput.style.borderColor = '#c0392b';
+        if (!hasError) nameInput.focus();
+        hasError = true;
+    } else {
+        nameError.style.display = 'none';
+        nameInput.style.borderColor = '#ddd';
+    }
+
+    // Validate last name
+    if (lastNameInput && !lastName) {
+        lastNameError.style.display = 'block';
+        lastNameInput.style.borderColor = '#c0392b';
+        if (!hasError) lastNameInput.focus();
+        hasError = true;
+    } else if (lastNameError) {
+        lastNameError.style.display = 'none';
+        if (lastNameInput) lastNameInput.style.borderColor = '#ddd';
+    }
+
+    // Validate phone
+    if (phoneInput && !phone) {
+        phoneError.style.display = 'block';
+        phoneInput.style.borderColor = '#c0392b';
+        if (!hasError) phoneInput.focus();
+        hasError = true;
+    } else if (phoneError) {
+        phoneError.style.display = 'none';
+        if (phoneInput) phoneInput.style.borderColor = '#ddd';
+    }
+
+    if (hasError) return;
+
+    studentName = name;
+    studentLastName = lastName;
+
+    // Capture email and phone from form fields (if not already set from URL params)
+    const emailInput = document.getElementById('studentEmailInput');
+    if (emailInput && emailInput.value.trim()) {
+        studentEmail = emailInput.value.trim();
+    }
+    if (phone) {
+        studentPhone = phone;
+    }
+
+    document.getElementById('welcomeScreen').classList.remove('active');
+    document.getElementById('questionScreen').classList.add('active');
+    document.getElementById('progressContainer').style.display = 'block';
+    showQuestion();
+}
+
+// Shuffle array using Fisher-Yates algorithm
+function shuffleArray(arr) {
+    const shuffled = [...arr];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+}
+
+let shuffledOptions = []; // Store shuffled options for current question
+
+function showQuestion() {
+    const q = questions[currentQuestion];
+    const total = questions.length;
+    const pct = ((currentQuestion) / (total + voiceTasks.length)) * 100;
+
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = `Question ${currentQuestion + 1} of ${total}`;
+    document.getElementById('progressSection').textContent = `${q.sectionIcon} ${q.section}`;
+
+    // Shuffle the options so correct answer isn't always A
+    shuffledOptions = shuffleArray([...q.options]);
+
+    let html = `<div class="question-section-badge">${q.sectionIcon} ${q.section.toUpperCase()}</div>`;
+    html += `<div class="question-text">${q.text}</div>`;
+    if (q.hebrew) html += `<div class="question-hebrew">${q.hebrew}</div>`;
+    if (q.context) html += `<div class="question-context">${q.context}</div>`;
+
+    // Add "I don't know" as the last option (always last, not shuffled)
+    shuffledOptions.push({ text: "I don't know", hebrew: "", correct: false });
+
+    html += `<div class="options">`;
+    const letters = ['A','B','C','D','E'];
+    shuffledOptions.forEach((opt, i) => {
+        const isIDK = (opt.text === "I don't know");
+        const display = opt.hebrew ? `<span class="option-hebrew">${opt.hebrew}</span><br><span style="font-size:14px;color:#888;">${opt.text}</span>` : opt.text;
+        html += `<div class="option${isIDK ? ' idk-option' : ''}" data-index="${i}" onclick="selectOption(${i})">
+            <div class="option-letter">${letters[i]}</div>
+            <div class="option-text">${display}</div>
+        </div>`;
+    });
+    html += `</div>`;
+    html += `<div class="feedback" id="feedback"></div>`;
+
+    document.getElementById('questionCard').innerHTML = html;
+    document.getElementById('nextBtnContainer').style.display = 'none';
+    document.getElementById('checkBtnContainer').style.display = 'none';
+    answered = false;
+    selectedIndex = -1;
+}
+
+let selectedIndex = -1; // Track which option is currently selected
+
+function selectOption(index) {
+    if (answered) return;
+    answered = true;
+    selectedIndex = index;
+
+    const q = questions[currentQuestion];
+    const options = document.querySelectorAll('.option');
+    const feedback = document.getElementById('feedback');
+    const correctIndex = shuffledOptions.findIndex(o => o.correct);
+
+    const section = q.section;
+    if (!sectionScores[section]) sectionScores[section] = {correct:0, total:0};
+    sectionScores[section].total++;
+
+    // Show correct/wrong styling
+    options[index].classList.add(index === correctIndex ? 'correct' : 'wrong');
+    if (index !== correctIndex) options[correctIndex].classList.add('correct');
+
+    // Disable all options visually
+    options.forEach(opt => opt.style.pointerEvents = 'none');
+
+    const isCorrect = index === correctIndex;
+
+    // Track this answer
+    userAnswers.push({
+        question: q.text,
+        section: q.section,
+        selected: shuffledOptions[index].text,
+        correct: shuffledOptions[correctIndex].text,
+        isCorrect: isCorrect
+    });
+
+    if (isCorrect) {
+        score++;
+        sectionScores[section].correct++;
+        feedback.className = 'feedback correct show';
+        feedback.innerHTML = `<span class="emoji">✅</span> ${q.feedback_correct}`;
+    } else {
+        feedback.className = 'feedback wrong show';
+        feedback.innerHTML = `<span class="emoji">💡</span> ${q.feedback_wrong || 'Not quite — but that\'s what this test is for!'}`;
+    }
+
+    // Auto-advance after showing feedback
+    const delay = isCorrect ? 1200 : 2000; // longer for wrong answers so they can read feedback
+
+    // Stop quiz if wrong answer on Q1, Q2, or Q3 (too basic for the course)
+    if (currentQuestion <= 2 && !isCorrect) {
+        setTimeout(() => { showCantReadScreen(); }, delay);
+        return;
+    }
+
+    setTimeout(() => { nextQuestion(); }, delay);
+}
+
+function showCantReadScreen() {
+    document.getElementById('questionScreen').classList.remove('active');
+    document.getElementById('cantReadScreen').classList.add('active');
+    document.getElementById('progressContainer').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Determine level: "Can't Read" if they selected the can't-read option, otherwise "Beginner"
+    const lastAnswer = userAnswers[userAnswers.length - 1];
+    const isCantRead = lastAnswer && lastAnswer.selected === "I can't read Hebrew";
+    const level = isCantRead ? "Can't Read" : "Beginner";
+    const levelHebrew = isCantRead ? "לא קורא/ת" : "מתחיל/ה";
+
+    // Submit results
+    const statusEl = document.getElementById('cantReadSubmitStatus');
+    if (statusEl && APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'PASTE_YOUR_APPS_SCRIPT_URL_HERE') {
+        statusEl.className = 'submit-status sending';
+        statusEl.textContent = '📤 Saving your results...';
+        fetch(APPS_SCRIPT_URL, {
+            method: 'POST', mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({
+                action: 'quiz', name: studentName, lastName: studentLastName,
+                email: studentEmail, phone: studentPhone,
+                score: score, total: questions.length,
+                percentage: Math.round((score / questions.length) * 100),
+                level: level, levelHebrew: levelHebrew,
+                sectionScores: sectionScores, answers: userAnswers,
+                recordings: [], timestamp: new Date().toISOString(),
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+            })
+        }).then(() => {
+            statusEl.className = 'submit-status success';
+            statusEl.textContent = '✅ Results saved successfully!';
+        }).catch(() => {
+            statusEl.className = 'submit-status error';
+            statusEl.textContent = '⚠️ Could not save results.';
+        });
+    }
+}
+
+// Check if we should stop the quiz early based on poor performance
+// Note: Q1-Q3 wrong answers are already caught in checkAnswer() and redirect to cantReadScreen.
+// This function handles later stopping points only.
+function shouldStopEarly() {
+    const answered = currentQuestion + 1;
+    // After question 8 (Grammar done): if very low score, stop early
+    if (answered === 8 && score <= 3) return true;
+    return false;
+}
+
+function skipRemainingQuestions() {
+    // Mark all remaining questions as unanswered (wrong) in section scores
+    for (let i = currentQuestion + 1; i < questions.length; i++) {
+        const section = questions[i].section;
+        if (!sectionScores[section]) sectionScores[section] = {correct:0, total:0};
+        sectionScores[section].total++;
+        userAnswers.push({
+            question: questions[i].text,
+            section: questions[i].section,
+            selected: "(skipped - early stop)",
+            correct: "(skipped)",
+            isCorrect: false
+        });
+    }
+}
+
+function nextQuestion() {
+    // Check for adaptive early stopping
+    if (shouldStopEarly()) {
+        skipRemainingQuestions();
+        currentQuestion = questions.length; // Jump to end
+        goToVoice();
+        return;
+    }
+
+    currentQuestion++;
+    if (currentQuestion >= questions.length) {
+        goToVoice();
+    } else {
+        showQuestion();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+// ==========================================
+// VOICE RECORDING
+// ==========================================
+
+function goToVoice() {
+    document.getElementById('questionScreen').classList.remove('active');
+    document.getElementById('voiceScreen').classList.add('active');
+    document.getElementById('progressSection').textContent = '🎤 Speaking';
+    currentVoiceTask = 0;
+    showVoiceTask();
+    // Scroll to top and update parent iframe height
+    window.scrollTo(0, 0);
+    sendHeightToParent();
+    setTimeout(sendHeightToParent, 300);
+    setTimeout(sendHeightToParent, 800);
+}
+
+function showVoiceTask() {
+    const total = questions.length + voiceTasks.length;
+    const pct = ((questions.length + currentVoiceTask) / total) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = `Speaking ${currentVoiceTask + 1} of ${voiceTasks.length}`;
+
+    let tasksHtml = '';
+    voiceTasks.forEach((t, i) => {
+        let status = '⬜';
+        let cls = '';
+        if (i < currentVoiceTask) { status = '✅'; cls = 'completed'; }
+        else if (i === currentVoiceTask) { status = '🎤'; cls = 'active'; }
+        tasksHtml += `<div class="voice-task ${cls}"><span class="status">${status}</span> ${t.english}</div>`;
+    });
+    document.getElementById('voiceTasks').innerHTML = tasksHtml;
+
+    const task = voiceTasks[currentVoiceTask];
+    document.getElementById('voicePrompt').textContent = task.prompt;
+    document.getElementById('voicePromptEn').textContent = task.english;
+
+    // Reset UI
+    const btn = document.getElementById('recordBtn');
+    btn.className = 'record-btn idle';
+    document.getElementById('micIcon').style.display = 'block';
+    document.getElementById('stopIcon').style.display = 'none';
+    document.getElementById('checkIcon').style.display = 'none';
+    document.getElementById('recordLabel').textContent = 'Tap to record';
+    document.getElementById('recordTimer').style.display = 'none';
+    document.getElementById('audioPlayback').classList.remove('show');
+    document.getElementById('voiceNextContainer').style.display = 'none';
+    document.getElementById('voiceNextContainer').classList.remove('fixed-bottom');
+    document.getElementById('voiceSkipContainer').style.display = 'none';
+    document.getElementById('voiceSkipContainer').classList.remove('fixed-bottom');
+    document.querySelector('.voice-section').classList.remove('has-fixed-buttons');
+    document.getElementById('micErrorMsg').style.display = 'none';
+
+    // Scroll to top of voice section and update parent iframe height
+    window.scrollTo(0, 0);
+    sendHeightToParent();
+    setTimeout(sendHeightToParent, 200);
+    setTimeout(sendHeightToParent, 600);
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'auto';
+}
+
+async function toggleRecording() {
+    const btn = document.getElementById('recordBtn');
+
+    if (btn.classList.contains('idle')) {
+        // Start recording
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+
+            mediaRecorder.ondataavailable = (e) => { audioChunks.push(e.data); };
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(audioChunks, { type: 'audio/webm' });
+                recordings.push({ task: currentVoiceTask, blob: blob });
+                const url = URL.createObjectURL(blob);
+                document.getElementById('audioPlayer').src = url;
+                document.getElementById('audioPlayback').classList.add('show');
+
+                btn.className = 'record-btn done';
+                document.getElementById('micIcon').style.display = 'none';
+                document.getElementById('stopIcon').style.display = 'none';
+                document.getElementById('checkIcon').style.display = 'block';
+                document.getElementById('recordLabel').textContent = 'Recording saved!';
+                document.getElementById('recordTimer').style.display = 'none';
+                document.getElementById('voiceNextContainer').style.display = 'block';
+
+                clearInterval(timerInterval);
+                stream.getTracks().forEach(t => t.stop());
+
+                // Make buttons fixed at bottom so they're always reachable (esp. in Wix iframe)
+                document.getElementById('voiceNextContainer').classList.add('fixed-bottom');
+                document.querySelector('.voice-section').classList.add('has-fixed-buttons');
+
+                // Notify parent iframe of new height
+                sendHeightToParent();
+                setTimeout(sendHeightToParent, 300);
+                setTimeout(sendHeightToParent, 1000);
+            };
+
+            mediaRecorder.start();
+            btn.className = 'record-btn recording';
+            document.getElementById('micIcon').style.display = 'none';
+            document.getElementById('stopIcon').style.display = 'block';
+            document.getElementById('recordLabel').textContent = 'Recording... tap to stop';
+            document.getElementById('recordTimer').style.display = 'block';
+            recordingSeconds = 0;
+            timerInterval = setInterval(() => {
+                recordingSeconds++;
+                const m = Math.floor(recordingSeconds / 60);
+                const s = recordingSeconds % 60;
+                document.getElementById('recordTimer').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+                if (recordingSeconds >= 30) toggleRecording();
+            }, 1000);
+
+        } catch (err) {
+            console.log('Microphone error:', err.name, err.message);
+            document.getElementById('micErrorMsg').style.display = 'block';
+            document.getElementById('voiceSkipContainer').style.display = 'flex';
+            document.getElementById('recordBtn').style.opacity = '0.4';
+            document.getElementById('recordBtn').style.pointerEvents = 'none';
+            document.getElementById('recordLabel').textContent = 'Microphone unavailable';
+            // Make skip button fixed at bottom (esp. in Wix iframe)
+            document.getElementById('voiceSkipContainer').classList.add('fixed-bottom');
+            document.querySelector('.voice-section').classList.add('has-fixed-buttons');
+        }
+    } else if (btn.classList.contains('recording')) {
+        mediaRecorder.stop();
+    }
+}
+
+function reRecord() {
+    recordings = recordings.filter(r => r.task !== currentVoiceTask);
+    showVoiceTask();
+}
+
+function skipVoiceTask() {
+    currentVoiceTask++;
+    if (currentVoiceTask >= voiceTasks.length) {
+        showResults();
+    } else {
+        showVoiceTask();
+        // Keep showing skip option if mic not available
+        document.getElementById('micErrorMsg').style.display = 'block';
+        document.getElementById('voiceSkipContainer').style.display = 'flex';
+        document.getElementById('recordBtn').style.opacity = '0.4';
+        document.getElementById('recordBtn').style.pointerEvents = 'none';
+        document.getElementById('recordLabel').textContent = 'Microphone unavailable';
+    }
+}
+
+function nextVoiceTask() {
+    currentVoiceTask++;
+    if (currentVoiceTask >= voiceTasks.length) {
+        showResults();
+    } else {
+        showVoiceTask();
+    }
+}
+
+// ==========================================
+// DATA SUBMISSION
+// ==========================================
+
+function blobToBase64(blob) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+        reader.readAsDataURL(blob);
+    });
+}
+
+async function submitResults(levelName, levelHebrew, pct) {
+    const statusEl = document.getElementById('submitStatus');
+    if (!statusEl) return;
+
+    // Show sending status
+    statusEl.className = 'submit-status sending';
+    statusEl.textContent = '📤 Saving your results...';
+
+    try {
+        // Convert audio recordings to base64
+        const audioData = [];
+        for (const rec of recordings) {
+            const base64 = await blobToBase64(rec.blob);
+            audioData.push({
+                task: rec.task,
+                prompt: voiceTasks[rec.task] ? voiceTasks[rec.task].english : '',
+                base64: base64,
+                type: rec.blob.type
+            });
+        }
+
+        const payload = {
+            action: 'quiz',
+            name: studentName,
+            lastName: studentLastName,
+            email: studentEmail,
+            phone: studentPhone,
+            score: score,
+            total: questions.length,
+            percentage: pct,
+            level: levelName,
+            levelHebrew: levelHebrew,
+            sectionScores: sectionScores,
+            answers: userAnswers,
+            recordings: audioData,
+            timestamp: new Date().toISOString(),
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+        };
+
+        const response = await fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify(payload)
+        });
+
+        statusEl.className = 'submit-status success';
+        statusEl.textContent = '✅ Results saved successfully!';
+    } catch (err) {
+        console.error('Submit error:', err);
+        statusEl.className = 'submit-status error';
+        statusEl.textContent = '⚠️ Could not save results. Your score is still shown above.';
+    }
+}
+
+// ==========================================
+// RESULTS
+// ==========================================
+
+function getNextClassInfo() {
+    // Find next Sunday
+    const now = new Date();
+    const day = now.getDay();
+    const daysUntilSunday = (7 - day) % 7 || 7;
+    const nextSun = new Date(now.getFullYear(), now.getMonth(), now.getDate() + daysUntilSunday);
+
+    // Date display
+    const dateStr = nextSun.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+
+    // Calculate Israel timezone offset dynamically (handles DST)
+    const refDateStr = nextSun.toLocaleDateString('en-CA'); // YYYY-MM-DD
+    const testDate = new Date(refDateStr + 'T12:00:00Z');
+    const israelHourStr = testDate.toLocaleString('en-US', {timeZone: 'Asia/Jerusalem', hour: 'numeric', hour12: false});
+    const israelHour = parseInt(israelHourStr);
+    const offset = israelHour - 12; // hours ahead of UTC
+
+    // Create UTC dates for 17:45 and 20:00 Israel time
+    const startH = 17 - offset;
+    const endH = 20 - offset;
+    const startUTC = new Date(refDateStr + 'T' + String(startH).padStart(2,'0') + ':45:00Z');
+    const endUTC = new Date(refDateStr + 'T' + String(endH).padStart(2,'0') + ':00:00Z');
+
+    // Display in user's local timezone
+    const timeOpts = { hour: 'numeric', minute: '2-digit', hour12: true };
+    const localStart = startUTC.toLocaleTimeString('en-US', timeOpts);
+    const localEnd = endUTC.toLocaleTimeString('en-US', timeOpts);
+    const tzParts = Intl.DateTimeFormat().resolvedOptions().timeZone.split('/');
+    const localTZ = tzParts[tzParts.length - 1].replace(/_/g, ' ');
+
+    // Google Calendar URL (times in Israel timezone, Google converts automatically)
+    const gcalDate = refDateStr.replace(/-/g, '');
+    const gcalUrl = 'https://calendar.google.com/calendar/event?action=TEMPLATE' +
+        '&text=' + encodeURIComponent('Ivrit with a Beat - Free Trial Class') +
+        '&dates=' + gcalDate + 'T174500/' + gcalDate + 'T200000' +
+        '&ctz=Asia/Jerusalem' +
+        '&details=' + encodeURIComponent('Join us for a free Hebrew trial class through Israeli music! 🎶\n\nZoom link: https://us06web.zoom.us/j/86176331553?pwd=b0BpdEzrCMnburtqK0bnL7Y0kn7MSO.1');
+
+    return {
+        dateStr: dateStr,
+        localTime: localStart + ' – ' + localEnd,
+        localTZ: localTZ,
+        gcalUrl: gcalUrl,
+        zoomUrl: 'https://us06web.zoom.us/j/86176331553?pwd=b0BpdEzrCMnburtqK0bnL7Y0kn7MSO.1'
+    };
+}
+
+function showResults() {
+    document.getElementById('voiceScreen').classList.remove('active');
+    document.getElementById('resultsScreen').classList.add('active');
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progressLabel').textContent = 'Complete!';
+    document.getElementById('progressSection').textContent = '🎉 Results';
+
+    // Calculate level
+    const total = questions.length;
+    const pct = Math.round((score / total) * 100);
+
+    // Check if user knows future tense (Q9 = index 8, Q10 = index 9)
+    const knowsFuture = userAnswers.length > 9 &&
+        (userAnswers[8]?.isCorrect || userAnswers[9]?.isCorrect);
+
+    // Level thresholds — future tense knowledge caps level at bet if missing
+    let level, levelClass, levelName, levelHebrew;
+
+    if (pct >= 80 && knowsFuture) {
+        level = 'dalet'; levelClass = 'dalet'; levelName = 'Advanced'; levelHebrew = 'רמה ד׳+';
+    } else if (pct >= 60 && knowsFuture) {
+        level = 'gimel'; levelClass = 'gimel'; levelName = 'High Intermediate'; levelHebrew = 'רמה ג׳';
+    } else if (pct >= 35) {
+        level = 'bet'; levelClass = 'bet'; levelName = 'Low Intermediate'; levelHebrew = 'רמה ב׳';
+    } else {
+        level = 'below'; levelClass = 'below'; levelName = 'Beginner'; levelHebrew = 'רמה א׳';
+    }
+
+    // === CLASS INFO: FIRST — most important CTA ===
+    const classInfo = getNextClassInfo();
+    let html = `
+        <div style="font-size:44px; margin-bottom:10px;">🎉</div>
+        <h2 style="font-family:'Playfair Display',serif; font-size:26px; color:#1a2744; margin-bottom:6px;">You're In!</h2>
+        <p style="color:#555;font-size:16px;margin-bottom:24px;">Your class is booked. Save it to your calendar so you don't miss it!</p>
+
+        <div style="background:#fff;border:2px solid #e8eaed;border-radius:16px;padding:28px 24px;margin:0 0 30px;text-align:center;">
+            <div style="display:inline-flex;align-items:center;gap:10px;margin-bottom:16px;">
+                <div style="width:42px;height:42px;background:#4285f4;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;">📅</div>
+                <div style="text-align:left;">
+                    <div style="font-size:17px;font-weight:700;color:#1a2744;">Ivrit with a Beat</div>
+                    <div style="font-size:13px;color:#888;">Free Trial Class</div>
+                </div>
+            </div>
+
+            <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:20px;">
+                <div style="background:#f8f9fa;border-radius:12px;padding:12px 20px;min-width:130px;">
+                    <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Date</div>
+                    <div style="font-size:16px;font-weight:700;color:#1a2744;">${classInfo.dateStr}</div>
+                </div>
+                <div style="background:#f8f9fa;border-radius:12px;padding:12px 20px;min-width:130px;">
+                    <div style="font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Time</div>
+                    <div style="font-size:16px;font-weight:700;color:#1a2744;">${classInfo.localTime}</div>
+                    <div style="font-size:11px;color:#999;margin-top:2px;">${classInfo.localTZ}</div>
+                </div>
+            </div>
+
+            <a href="${classInfo.gcalUrl}" target="_blank" style="display:inline-flex;align-items:center;gap:10px;background:#1a73e8;color:#fff;padding:14px 40px;border-radius:8px;font-size:16px;font-weight:600;text-decoration:none;box-shadow:0 2px 8px rgba(26,115,232,0.3);transition:all 0.2s;letter-spacing:0.3px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Add to Google Calendar
+            </a>
+            <div style="font-size:12px;color:#aaa;margin-top:12px;">5:45 PM – 8:00 PM Israel Time</div>
+        </div>
+
+        <div style="width:100%;height:1px;background:#eee;margin:5px 0 25px;"></div>
+
+        <h3 style="font-family:'Playfair Display',serif; font-size:22px; color:#1a2744; margin-bottom:5px;">Your Results</h3>
+        <div class="results-score">${score}<span>/${total}</span></div>
+        <p style="color:#888; font-size:14px;">questions answered correctly</p>
+
+        <div class="results-breakdown">`;
+
+    for (const [section, data] of Object.entries(sectionScores)) {
+        if (data.total > 0) {
+            const secPct = Math.round((data.correct / data.total) * 100);
+            const color = secPct >= 70 ? '#2d8a4e' : secPct >= 40 ? 'var(--yellow)' : '#c0392b';
+            html += `<div class="results-breakdown-item">
+                <span>${section}</span>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <span style="font-weight:600;">${data.correct}/${data.total}</span>
+                    <div class="bar-bg"><div class="bar-fill" style="width:${secPct}%;background:${color};"></div></div>
+                </div>
+            </div>`;
+        }
+    }
+
+    html += `</div>
+        <div class="results-message">Thank you for completing the assessment! We've received your answers and will use them to <strong>find the perfect group for your level</strong>. We'll be in touch soon with your placement details!</div>`;
+
+    if (recordings.length > 0) {
+        html += `<p style="color:#888; font-size:14px; margin-bottom:20px;">🎤 Your ${recordings.length} voice recording(s) will be reviewed by Revital to fine-tune your placement.</p>`;
+    }
+
+    html += `<div id="submitStatus" class="submit-status"></div>`;
+
+    // Class info is shown at the top of results
+
+    document.getElementById('resultsCard').innerHTML = html;
+
+    // Animate bars
+    setTimeout(() => {
+        document.querySelectorAll('.bar-fill').forEach(bar => {
+            bar.style.width = bar.style.width;
+        });
+    }, 100);
+
+    // Submit results to Google Sheets
+    if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'PASTE_YOUR_APPS_SCRIPT_URL_HERE') {
+        submitResults(levelName, levelHebrew, pct);
+    }
+}
+</script>
+
+<script>
+// === IFRAME AUTO-HEIGHT for Wix embed ===
+function sendHeightToParent() {
+    const height = Math.max(
+        document.documentElement.scrollHeight,
+        document.body.scrollHeight,
+        document.documentElement.offsetHeight
+    );
+    // Add extra buffer for mobile (iOS iframes clip content)
+    const isMobile = window.innerWidth <= 600;
+    const buffer = isMobile ? 200 : 80;
+    const finalHeight = height + buffer;
+    // Send to Wix parent via multiple methods
+    window.parent.postMessage({ type: 'quiz-height', height: finalHeight }, '*');
+    // Also try Wix-specific resize message
+    window.parent.postMessage({ type: 'set-height', data: finalHeight }, '*');
+}
+// Send height on load, resize, and whenever content changes
+window.addEventListener('load', () => {
+    sendHeightToParent();
+    setTimeout(sendHeightToParent, 300);
+    setTimeout(sendHeightToParent, 1000);
+    setTimeout(sendHeightToParent, 3000);
+});
+window.addEventListener('resize', sendHeightToParent);
+// Observe DOM changes to auto-resize
+const resizeObserver = new MutationObserver(() => { setTimeout(sendHeightToParent, 100); });
+resizeObserver.observe(document.body, { childList: true, subtree: true, attributes: true });
+// Send height periodically (helps with slow iframe loads + voice recording section)
+let heightInterval = setInterval(sendHeightToParent, 1000);
+setTimeout(() => clearInterval(heightInterval), 120000);
+</script>
+
+</body>
+</html>
