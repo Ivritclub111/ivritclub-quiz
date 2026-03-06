@@ -1068,7 +1068,6 @@ const voiceTasks = [
 // ==========================================
 let currentQuestion = 0;
 let score = 0;
-let earlyWrongCount = 0;
 let sectionScores = { Reading: {correct:0, total:0}, Vocabulary: {correct:0, total:0}, Grammar: {correct:0, total:0}, Comprehension: {correct:0, total:0}, Advanced: {correct:0, total:0} };
 let answered = false;
 let currentVoiceTask = 0;
@@ -1086,7 +1085,15 @@ let userAnswers = [];
 // Read URL parameters (passed from Wix landing page form)
 const urlParams = new URLSearchParams(window.location.search);
 const fromLandingPage = urlParams.get('name') && urlParams.get('email');
-const quizSource = urlParams.get('source') || '';
+
+// Detect source: check own URL first, then parent page referrer (for iframe embed)
+let quizSource = urlParams.get('source') || '';
+if (!quizSource && document.referrer) {
+    try {
+        const referrerParams = new URLSearchParams(new URL(document.referrer).search);
+        quizSource = referrerParams.get('source') || '';
+    } catch(e) {}
+}
 const fromExternalForm = quizSource === 'music' || quizSource === 'masterclass';
 
 if (urlParams.get('name')) {
@@ -1312,13 +1319,8 @@ function selectOption(index) {
     // Auto-advance after showing feedback
     const delay = isCorrect ? 1200 : 2000; // longer for wrong answers so they can read feedback
 
-    // Track wrong answers in Q1-Q3
+    // Stop quiz if wrong answer on Q1, Q2, or Q3 (too basic for the course)
     if (currentQuestion <= 2 && !isCorrect) {
-        earlyWrongCount++;
-    }
-
-    // After Q3: if ALL THREE first questions were wrong, end quiz early
-    if (currentQuestion === 2 && earlyWrongCount === 3) {
         setTimeout(() => { showCantReadScreen(); }, delay);
         return;
     }
@@ -1367,7 +1369,7 @@ function showCantReadScreen() {
 }
 
 // Check if we should stop the quiz early based on poor performance
-// Note: If ALL THREE Q1-Q3 are wrong, checkAnswer() redirects to cantReadScreen.
+// Note: Q1-Q3 wrong answers are already caught in checkAnswer() and redirect to cantReadScreen.
 // This function handles later stopping points only.
 function shouldStopEarly() {
     const answered = currentQuestion + 1;
