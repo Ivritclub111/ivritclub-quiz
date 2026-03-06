@@ -1068,6 +1068,7 @@ const voiceTasks = [
 // ==========================================
 let currentQuestion = 0;
 let score = 0;
+let earlyWrongCount = 0;
 let sectionScores = { Reading: {correct:0, total:0}, Vocabulary: {correct:0, total:0}, Grammar: {correct:0, total:0}, Comprehension: {correct:0, total:0}, Advanced: {correct:0, total:0} };
 let answered = false;
 let currentVoiceTask = 0;
@@ -1319,8 +1320,13 @@ function selectOption(index) {
     // Auto-advance after showing feedback
     const delay = isCorrect ? 1200 : 2000; // longer for wrong answers so they can read feedback
 
-    // Stop quiz if wrong answer on Q1, Q2, or Q3 (too basic for the course)
+    // Track wrong answers in Q1-Q3
     if (currentQuestion <= 2 && !isCorrect) {
+        earlyWrongCount++;
+    }
+
+    // After Q3: if ALL THREE first questions were wrong, end quiz early
+    if (currentQuestion === 2 && earlyWrongCount === 3) {
         setTimeout(() => { showCantReadScreen(); }, delay);
         return;
     }
@@ -1369,7 +1375,7 @@ function showCantReadScreen() {
 }
 
 // Check if we should stop the quiz early based on poor performance
-// Note: Q1-Q3 wrong answers are already caught in checkAnswer() and redirect to cantReadScreen.
+// Note: If ALL THREE Q1-Q3 are wrong, checkAnswer() redirects to cantReadScreen.
 // This function handles later stopping points only.
 function shouldStopEarly() {
     const answered = currentQuestion + 1;
