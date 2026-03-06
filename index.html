@@ -1173,10 +1173,9 @@ function registerStudent() {
     // Fire and forget — don't block the quiz
     fetch(APPS_SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors',
         headers: { 'Content-Type': 'text/plain' },
         body: JSON.stringify(payload)
-    }).catch(err => console.log('Register error:', err));
+    }).then(r => r.text()).then(t => console.log('Register:', t)).catch(err => console.log('Register error:', err));
 }
 
 // ==========================================
@@ -1400,7 +1399,7 @@ function showCantReadScreen() {
         statusEl.className = 'submit-status sending';
         statusEl.textContent = '📤 Saving your results...';
         fetch(APPS_SCRIPT_URL, {
-            method: 'POST', mode: 'no-cors',
+            method: 'POST',
             headers: { 'Content-Type': 'text/plain' },
             body: JSON.stringify({
                 action: 'quiz', name: studentName, lastName: studentLastName,
@@ -1681,7 +1680,6 @@ async function submitResults(levelName, levelHebrew, pct) {
 
         const response = await fetch(APPS_SCRIPT_URL, {
             method: 'POST',
-            mode: 'no-cors',
             headers: { 'Content-Type': 'text/plain' },
             body: JSON.stringify(payload)
         });
