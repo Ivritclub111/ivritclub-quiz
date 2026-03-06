@@ -35,7 +35,7 @@
         /* === TOP BAR === */
         .top-bar {
             background: var(--dark);
-            padding: 8px 20px;
+            padding: 12px 20px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -81,7 +81,7 @@
         /* === PROGRESS === */
         .progress-container {
             background: #fff;
-            padding: 10px 20px;
+            padding: 15px 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             position: sticky;
             top: 0;
@@ -115,7 +115,7 @@
         .main {
             max-width: 650px;
             margin: 0 auto;
-            padding: 15px 20px 40px;
+            padding: 30px 20px 100px;
         }
 
         /* === SCREENS === */
@@ -164,7 +164,7 @@
         .question-card {
             background: #fff;
             border-radius: 20px;
-            padding: 25px 30px;
+            padding: 40px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.06);
         }
         .question-section-badge {
@@ -175,28 +175,28 @@
             font-weight: 700;
             padding: 5px 14px;
             border-radius: 20px;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             letter-spacing: 0.5px;
         }
         .question-text {
-            font-size: 19px;
+            font-size: 22px;
             font-weight: 700;
             color: #000;
-            margin-bottom: 8px;
-            line-height: 1.5;
+            margin-bottom: 12px;
+            line-height: 1.6;
         }
         .question-hebrew {
             font-family: 'Noto Sans Hebrew', sans-serif;
-            font-size: 22px;
+            font-size: 26px;
             font-weight: 600;
             direction: rtl;
             text-align: right;
             color: var(--dark);
             background: #f8f6f3;
-            padding: 14px 20px;
+            padding: 20px 25px;
             border-radius: 12px;
-            margin: 12px 0;
-            line-height: 1.5;
+            margin: 20px 0;
+            line-height: 1.6;
         }
         .question-hebrew .blank {
             display: inline-block;
@@ -205,39 +205,39 @@
             margin: 0 5px;
         }
         .question-context {
-            font-size: 16px;
+            font-size: 19px;
             color: #000;
-            margin-bottom: 12px;
+            margin-bottom: 20px;
             font-weight: 600;
         }
 
         /* === OPTIONS === */
-        .options { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+        .options { display: flex; flex-direction: column; gap: 12px; margin-top: 25px; }
         .option {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 11px 16px;
+            gap: 15px;
+            padding: 16px 20px;
             border: 2px solid #e8e8e4;
-            border-radius: 12px;
+            border-radius: 14px;
             cursor: pointer;
             transition: all 0.2s ease;
-            font-size: 15px;
+            font-size: 16px;
         }
         .option:hover { border-color: var(--coral); background: #fdf8f0; }
         .option.selected { border-color: var(--coral); background: #fdf8f0; }
         .option.correct { border-color: #2d8a4e; background: #e8f5e9; }
         .option.wrong { border-color: #c0392b; background: #fdecea; }
         .option-letter {
-            width: 30px;
-            height: 30px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: #fef3e8;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 13px;
+            font-size: 14px;
             color: var(--coral);
             flex-shrink: 0;
         }
@@ -252,15 +252,15 @@
         .option-hebrew {
             font-family: 'Noto Sans Hebrew', sans-serif;
             direction: rtl;
-            font-size: 17px;
+            font-size: 20px;
         }
 
         /* === FEEDBACK === */
         .feedback {
-            margin-top: 12px;
-            padding: 12px 16px;
-            border-radius: 10px;
-            font-size: 14px;
+            margin-top: 20px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-size: 15px;
             display: none;
         }
         .feedback.show { display: block; animation: fadeIn 0.3s ease; }
@@ -272,19 +272,19 @@
         .voice-section {
             background: #fff;
             border-radius: 20px;
-            padding: 25px 30px;
+            padding: 40px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.06);
             text-align: center;
         }
         .voice-prompt {
             font-family: 'Noto Sans Hebrew', sans-serif;
-            font-size: 22px;
+            font-size: 24px;
             direction: rtl;
             background: #f8f6f3;
-            padding: 18px;
+            padding: 25px;
             border-radius: 12px;
-            margin: 15px 0;
-            line-height: 1.6;
+            margin: 25px 0;
+            line-height: 1.7;
             color: var(--dark);
         }
         .voice-prompt-english {
@@ -770,15 +770,15 @@
                     <button class="btn btn-primary" onclick="nextVoiceTask()">Next →</button>
                 </div>
 
+                <div class="btn-container" id="voiceSkipContainer" style="display:none; margin-top:10px;">
+                    <button class="btn btn-secondary" onclick="skipVoiceTask()" style="opacity:0.7; font-size:0.9em;">
+                        Skip recording →
+                    </button>
+                </div>
+
                 <div id="micErrorMsg" style="display:none; background:#fff3cd; border:1px solid #ffc107; border-radius:10px; padding:12px 16px; margin-top:12px; font-size:0.9em; color:#856404; text-align:center;">
                     🎤 Microphone not available.<br>
                     You can skip the recording tasks — it won't affect your score.
-                </div>
-
-                <div class="btn-container" id="voiceSkipContainer" style="display:none; margin-top:16px;">
-                    <button class="btn btn-primary" onclick="skipVoiceTask()" style="font-size:1em; padding:14px 36px;">
-                        Skip Recording Tasks →
-                    </button>
                 </div>
             </div>
         </div>
@@ -1068,6 +1068,7 @@ const voiceTasks = [
 // ==========================================
 let currentQuestion = 0;
 let score = 0;
+let earlyWrongCount = 0;
 let sectionScores = { Reading: {correct:0, total:0}, Vocabulary: {correct:0, total:0}, Grammar: {correct:0, total:0}, Comprehension: {correct:0, total:0}, Advanced: {correct:0, total:0} };
 let answered = false;
 let currentVoiceTask = 0;
@@ -1085,6 +1086,8 @@ let userAnswers = [];
 // Read URL parameters (passed from Wix landing page form)
 const urlParams = new URLSearchParams(window.location.search);
 const fromLandingPage = urlParams.get('name') && urlParams.get('email');
+const quizSource = urlParams.get('source') || '';
+const fromExternalForm = quizSource === 'music' || quizSource === 'masterclass';
 
 if (urlParams.get('name')) {
     document.getElementById('studentNameInput').value = urlParams.get('name');
@@ -1103,12 +1106,35 @@ if (urlParams.get('phone')) {
     document.getElementById('studentPhoneInput').value = urlParams.get('phone');
 }
 
-// If coming from landing page, show welcome message and hide form fields
+// If coming from landing page with full data, show welcome message and hide form fields
 if (fromLandingPage) {
     document.getElementById('welcomeFormFields').style.display = 'none';
     document.getElementById('welcomeAutoMsg').style.display = 'block';
     const fullName = urlParams.get('name') + (studentLastName ? ' ' + studentLastName : '');
     document.getElementById('welcomeName').textContent = 'Welcome, ' + fullName + '!';
+}
+
+// If coming from external form (Wix /music or /masterclass), simplify — only ask for first name
+if (fromExternalForm && !fromLandingPage) {
+    // Hide last name input
+    const lastNameGroup = document.getElementById('studentLastNameInput');
+    if (lastNameGroup) lastNameGroup.closest('.name-input-group').style.display = 'none';
+
+    // Hide email input
+    const emailGroup = document.getElementById('studentEmailInput');
+    if (emailGroup) emailGroup.closest('.name-input-group').style.display = 'none';
+
+    // Hide phone input
+    const phoneGroup = document.getElementById('studentPhoneInput');
+    if (phoneGroup) phoneGroup.closest('.name-input-group').style.display = 'none';
+
+    // Make first name full width (remove flex layout)
+    const nameRow = document.getElementById('studentNameInput').closest('div[style*="display:flex"]');
+    if (nameRow) {
+        nameRow.style.display = 'block';
+        nameRow.style.maxWidth = '350px';
+        nameRow.style.margin = '12px auto 6px';
+    }
 }
 
 // ==========================================
@@ -1145,8 +1171,8 @@ function startQuiz() {
         nameInput.style.borderColor = '#ddd';
     }
 
-    // Validate last name
-    if (lastNameInput && !lastName) {
+    // Validate last name (skip if coming from external form)
+    if (lastNameInput && !lastName && !fromExternalForm) {
         lastNameError.style.display = 'block';
         lastNameInput.style.borderColor = '#c0392b';
         if (!hasError) lastNameInput.focus();
@@ -1156,8 +1182,8 @@ function startQuiz() {
         if (lastNameInput) lastNameInput.style.borderColor = '#ddd';
     }
 
-    // Validate phone
-    if (phoneInput && !phone) {
+    // Validate phone (skip if coming from external form)
+    if (phoneInput && !phone && !fromExternalForm) {
         phoneError.style.display = 'block';
         phoneInput.style.borderColor = '#c0392b';
         if (!hasError) phoneInput.focus();
@@ -1237,12 +1263,6 @@ function showQuestion() {
     document.getElementById('checkBtnContainer').style.display = 'none';
     answered = false;
     selectedIndex = -1;
-
-    // Scroll to top of question and update iframe height
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    scrollParentToTop();
-    sendHeightToParent();
-    setTimeout(sendHeightToParent, 300);
 }
 
 let selectedIndex = -1; // Track which option is currently selected
@@ -1289,14 +1309,16 @@ function selectOption(index) {
         feedback.innerHTML = `<span class="emoji">💡</span> ${q.feedback_wrong || 'Not quite — but that\'s what this test is for!'}`;
     }
 
-    // Scroll feedback into view so it's not cut off
-    scrollToBottom(feedback);
-
     // Auto-advance after showing feedback
     const delay = isCorrect ? 1200 : 2000; // longer for wrong answers so they can read feedback
 
-    // Stop quiz if wrong answer on Q1, Q2, or Q3 (too basic for the course)
+    // Track wrong answers in Q1-Q3
     if (currentQuestion <= 2 && !isCorrect) {
+        earlyWrongCount++;
+    }
+
+    // After Q3: if ALL THREE first questions were wrong, end quiz early
+    if (currentQuestion === 2 && earlyWrongCount === 3) {
         setTimeout(() => { showCantReadScreen(); }, delay);
         return;
     }
@@ -1345,7 +1367,7 @@ function showCantReadScreen() {
 }
 
 // Check if we should stop the quiz early based on poor performance
-// Note: Q1-Q3 wrong answers are already caught in checkAnswer() and redirect to cantReadScreen.
+// Note: If ALL THREE Q1-Q3 are wrong, checkAnswer() redirects to cantReadScreen.
 // This function handles later stopping points only.
 function shouldStopEarly() {
     const answered = currentQuestion + 1;
@@ -1400,15 +1422,10 @@ function goToVoice() {
     showVoiceTask();
     // Scroll to top and update parent iframe height
     window.scrollTo(0, 0);
-    scrollParentToTop();
     sendHeightToParent();
     setTimeout(sendHeightToParent, 300);
     setTimeout(sendHeightToParent, 800);
-    setTimeout(sendHeightToParent, 2000);
 }
-
-// Also notify parent when user scrolls (helps keep iframe sized correctly)
-window.addEventListener('scroll', function() { sendHeightToParent(); }, { passive: true });
 
 function showVoiceTask() {
     const total = questions.length + voiceTasks.length;
@@ -1448,7 +1465,6 @@ function showVoiceTask() {
 
     // Scroll to top of voice section and update parent iframe height
     window.scrollTo(0, 0);
-    scrollParentToTop();
     sendHeightToParent();
     setTimeout(sendHeightToParent, 200);
     setTimeout(sendHeightToParent, 600);
@@ -1485,9 +1501,14 @@ async function toggleRecording() {
                 clearInterval(timerInterval);
                 stream.getTracks().forEach(t => t.stop());
 
-                // Scroll next/re-record buttons into view (position:fixed unreliable in Wix iframe)
-                scrollToBottom(document.getElementById('voiceNextContainer'));
+                // Make buttons fixed at bottom so they're always reachable (esp. in Wix iframe)
+                document.getElementById('voiceNextContainer').classList.add('fixed-bottom');
+                document.querySelector('.voice-section').classList.add('has-fixed-buttons');
+
+                // Notify parent iframe of new height
                 sendHeightToParent();
+                setTimeout(sendHeightToParent, 300);
+                setTimeout(sendHeightToParent, 1000);
             };
 
             mediaRecorder.start();
@@ -1512,9 +1533,9 @@ async function toggleRecording() {
             document.getElementById('recordBtn').style.opacity = '0.4';
             document.getElementById('recordBtn').style.pointerEvents = 'none';
             document.getElementById('recordLabel').textContent = 'Microphone unavailable';
-            // Scroll skip button into view so user can see it (position:fixed unreliable in Wix iframe)
-            scrollToBottom(document.getElementById('micErrorMsg'));
-            sendHeightToParent();
+            // Make skip button fixed at bottom (esp. in Wix iframe)
+            document.getElementById('voiceSkipContainer').classList.add('fixed-bottom');
+            document.querySelector('.voice-section').classList.add('has-fixed-buttons');
         }
     } else if (btn.classList.contains('recording')) {
         mediaRecorder.stop();
@@ -1538,8 +1559,6 @@ function skipVoiceTask() {
         document.getElementById('recordBtn').style.opacity = '0.4';
         document.getElementById('recordBtn').style.pointerEvents = 'none';
         document.getElementById('recordLabel').textContent = 'Microphone unavailable';
-        // Scroll skip button into view
-        scrollToBottom(document.getElementById('micErrorMsg'));
     }
 }
 
@@ -1600,7 +1619,8 @@ async function submitResults(levelName, levelHebrew, pct) {
             answers: userAnswers,
             recordings: audioData,
             timestamp: new Date().toISOString(),
-            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            source: quizSource || 'direct'
         };
 
         const response = await fetch(APPS_SCRIPT_URL, {
@@ -1768,11 +1788,6 @@ function showResults() {
 
     document.getElementById('resultsCard').innerHTML = html;
 
-    // Scroll to top and update parent iframe height
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    scrollParentToTop();
-    sendHeightToParent();
-
     // Animate bars
     setTimeout(() => {
         document.querySelectorAll('.bar-fill').forEach(bar => {
@@ -1795,40 +1810,14 @@ function sendHeightToParent() {
         document.body.scrollHeight,
         document.documentElement.offsetHeight
     );
-    // Add generous buffer so content is never cut off in Wix iframe
-    const buffer = 300;
+    // Add extra buffer for mobile (iOS iframes clip content)
+    const isMobile = window.innerWidth <= 600;
+    const buffer = isMobile ? 200 : 80;
     const finalHeight = height + buffer;
     // Send to Wix parent via multiple methods
     window.parent.postMessage({ type: 'quiz-height', height: finalHeight }, '*');
     // Also try Wix-specific resize message
     window.parent.postMessage({ type: 'set-height', data: finalHeight }, '*');
-}
-
-// Tell parent Wix page to scroll to the top of the iframe
-function scrollParentToTop() {
-    window.parent.postMessage({ type: 'quiz-scroll-top' }, '*');
-}
-
-// Tell parent Wix page to scroll so a specific Y offset inside the quiz is visible
-function scrollParentToY(y) {
-    window.parent.postMessage({ type: 'quiz-scroll-to', y: y }, '*');
-}
-
-// Helper: scroll element into view and update parent height + notify parent
-function scrollToBottom(el) {
-    if (el) {
-        setTimeout(() => {
-            el.scrollIntoView({ behavior: 'smooth', block: 'end' });
-            sendHeightToParent();
-            // Also tell parent page to scroll so this element is visible
-            const rect = el.getBoundingClientRect();
-            scrollParentToY(rect.bottom);
-        }, 100);
-        setTimeout(() => {
-            el.scrollIntoView({ behavior: 'smooth', block: 'end' });
-            sendHeightToParent();
-        }, 500);
-    }
 }
 // Send height on load, resize, and whenever content changes
 window.addEventListener('load', () => {
