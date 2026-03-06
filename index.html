@@ -1154,6 +1154,32 @@ if (fromExternalForm && !fromLandingPage) {
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyAStXyaD96ypbsyOxr7qaIn5EqsHNRqc1DkRE1-BSyfSnlx3EmDPL3paXJF1PQzgEd6g/exec';
 
 // ==========================================
+// REGISTER LEAD (sends immediately when quiz starts)
+// ==========================================
+function registerStudent() {
+    if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'PASTE_YOUR_APPS_SCRIPT_URL_HERE') return;
+    if (!studentEmail && !studentName) return; // nothing to register
+
+    const payload = {
+        action: 'register',
+        name: studentName,
+        lastname: studentLastName,
+        email: studentEmail,
+        phone: studentPhone,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        source: quizSource || 'direct'
+    };
+
+    // Fire and forget — don't block the quiz
+    fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload)
+    }).catch(err => console.log('Register error:', err));
+}
+
+// ==========================================
 // QUIZ LOGIC
 // ==========================================
 
@@ -1165,6 +1191,8 @@ function startQuiz() {
         if (!studentLastName) studentLastName = urlParams.get('lname') || urlParams.get('lastname') || '';
         if (!studentEmail) studentEmail = urlParams.get('email') || '';
         if (!studentPhone) studentPhone = urlParams.get('phone') || '';
+        // Register lead immediately in Google Sheets
+        registerStudent();
         document.getElementById('welcomeScreen').classList.remove('active');
         document.getElementById('questionScreen').classList.add('active');
         document.getElementById('progressContainer').style.display = 'block';
@@ -1231,6 +1259,9 @@ function startQuiz() {
     if (phone) {
         studentPhone = phone;
     }
+
+    // Register lead immediately in Google Sheets
+    registerStudent();
 
     document.getElementById('welcomeScreen').classList.remove('active');
     document.getElementById('questionScreen').classList.add('active');
