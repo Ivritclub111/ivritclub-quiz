@@ -1124,12 +1124,28 @@ if (fromLandingPage) {
 
 // If coming from external form (Wix /music or /masterclass), hide ALL fields — info already collected
 if (fromExternalForm && !fromLandingPage) {
+    const fname = urlParams.get('name') || urlParams.get('fname') || '';
+    const lname = urlParams.get('lname') || urlParams.get('lastname') || '';
+
     document.getElementById('welcomeFormFields').style.display = 'none';
     document.getElementById('welcomeAutoMsg').style.display = 'block';
-    document.getElementById('welcomeAutoMsg').innerHTML =
-        '<div style="font-size:36px; margin-bottom:8px;">🎉</div>' +
-        '<div style="font-size:20px; font-weight:600; color:#2e7d32;">Welcome!</div>' +
-        '<div style="font-size:15px; color:#666; margin-top:6px;">Ready to find out your Hebrew level?</div>';
+
+    if (fname) {
+        // Personalized welcome with name from form
+        const fullName = fname + (lname ? ' ' + lname : '');
+        document.getElementById('welcomeAutoMsg').innerHTML =
+            '<div style="font-size:36px; margin-bottom:8px;">👋</div>' +
+            '<div style="font-size:20px; font-weight:600; color:#2e7d32;">Welcome, ' + fullName + '!</div>' +
+            '<div style="font-size:15px; color:#666; margin-top:6px;">Ready to find out your Hebrew level?</div>';
+        studentName = fname;
+        studentLastName = lname;
+    } else {
+        // Generic welcome (no name available)
+        document.getElementById('welcomeAutoMsg').innerHTML =
+            '<div style="font-size:36px; margin-bottom:8px;">🎉</div>' +
+            '<div style="font-size:20px; font-weight:600; color:#2e7d32;">Welcome!</div>' +
+            '<div style="font-size:15px; color:#666; margin-top:6px;">Ready to find out your Hebrew level?</div>';
+    }
 }
 
 // ==========================================
@@ -1144,10 +1160,11 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyAStXyaD96ypbs
 function startQuiz() {
     // If coming from external form — skip all validation, go straight to quiz
     if (fromExternalForm) {
-        studentName = '';
-        studentLastName = '';
-        studentEmail = '';
-        studentPhone = '';
+        // Keep name/email if they were set from URL params, otherwise empty
+        if (!studentName) studentName = urlParams.get('name') || urlParams.get('fname') || '';
+        if (!studentLastName) studentLastName = urlParams.get('lname') || urlParams.get('lastname') || '';
+        if (!studentEmail) studentEmail = urlParams.get('email') || '';
+        if (!studentPhone) studentPhone = urlParams.get('phone') || '';
         document.getElementById('welcomeScreen').classList.remove('active');
         document.getElementById('questionScreen').classList.add('active');
         document.getElementById('progressContainer').style.display = 'block';
