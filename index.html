@@ -1146,6 +1146,9 @@ if (fromExternalForm && !fromLandingPage) {
             '<div style="font-size:20px; font-weight:600; color:#2e7d32;">Welcome!</div>' +
             '<div style="font-size:15px; color:#666; margin-top:6px;">Ready to find out your Hebrew level?</div>';
     }
+    // Register lead immediately on page load (even before clicking Let's Go!)
+    // This way, leads who leave without starting the quiz still get reminder emails
+    registerStudent();
 }
 
 // ==========================================
