@@ -1122,27 +1122,14 @@ if (fromLandingPage) {
     document.getElementById('welcomeName').textContent = 'Welcome, ' + fullName + '!';
 }
 
-// If coming from external form (Wix /music or /masterclass), simplify — only ask for first name
+// If coming from external form (Wix /music or /masterclass), hide ALL fields — info already collected
 if (fromExternalForm && !fromLandingPage) {
-    // Hide last name input
-    const lastNameGroup = document.getElementById('studentLastNameInput');
-    if (lastNameGroup) lastNameGroup.closest('.name-input-group').style.display = 'none';
-
-    // Hide email input
-    const emailGroup = document.getElementById('studentEmailInput');
-    if (emailGroup) emailGroup.closest('.name-input-group').style.display = 'none';
-
-    // Hide phone input
-    const phoneGroup = document.getElementById('studentPhoneInput');
-    if (phoneGroup) phoneGroup.closest('.name-input-group').style.display = 'none';
-
-    // Make first name full width (remove flex layout)
-    const nameRow = document.getElementById('studentNameInput').closest('div[style*="display:flex"]');
-    if (nameRow) {
-        nameRow.style.display = 'block';
-        nameRow.style.maxWidth = '350px';
-        nameRow.style.margin = '12px auto 6px';
-    }
+    document.getElementById('welcomeFormFields').style.display = 'none';
+    document.getElementById('welcomeAutoMsg').style.display = 'block';
+    document.getElementById('welcomeAutoMsg').innerHTML =
+        '<div style="font-size:36px; margin-bottom:8px;">🎉</div>' +
+        '<div style="font-size:20px; font-weight:600; color:#2e7d32;">Welcome!</div>' +
+        '<div style="font-size:15px; color:#666; margin-top:6px;">Ready to find out your Hebrew level?</div>';
 }
 
 // ==========================================
@@ -1155,6 +1142,19 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyAStXyaD96ypbs
 // ==========================================
 
 function startQuiz() {
+    // If coming from external form — skip all validation, go straight to quiz
+    if (fromExternalForm) {
+        studentName = '';
+        studentLastName = '';
+        studentEmail = '';
+        studentPhone = '';
+        document.getElementById('welcomeScreen').classList.remove('active');
+        document.getElementById('questionScreen').classList.add('active');
+        document.getElementById('progressContainer').style.display = 'block';
+        showQuestion();
+        return;
+    }
+
     const nameInput = document.getElementById('studentNameInput');
     const nameError = document.getElementById('nameError');
     const lastNameInput = document.getElementById('studentLastNameInput');
@@ -1179,8 +1179,8 @@ function startQuiz() {
         nameInput.style.borderColor = '#ddd';
     }
 
-    // Validate last name (skip if coming from external form)
-    if (lastNameInput && !lastName && !fromExternalForm) {
+    // Validate last name
+    if (lastNameInput && !lastName) {
         lastNameError.style.display = 'block';
         lastNameInput.style.borderColor = '#c0392b';
         if (!hasError) lastNameInput.focus();
@@ -1190,8 +1190,8 @@ function startQuiz() {
         if (lastNameInput) lastNameInput.style.borderColor = '#ddd';
     }
 
-    // Validate phone (skip if coming from external form)
-    if (phoneInput && !phone && !fromExternalForm) {
+    // Validate phone
+    if (phoneInput && !phone) {
         phoneError.style.display = 'block';
         phoneInput.style.borderColor = '#c0392b';
         if (!hasError) phoneInput.focus();
