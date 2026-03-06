@@ -1551,14 +1551,13 @@ async function toggleRecording() {
                 document.getElementById('checkIcon').style.display = 'block';
                 document.getElementById('recordLabel').textContent = 'Recording saved!';
                 document.getElementById('recordTimer').style.display = 'none';
-                document.getElementById('voiceNextContainer').style.display = 'block';
+                document.getElementById('voiceNextContainer').style.display = 'flex';
+                document.getElementById('voiceNextContainer').style.justifyContent = 'center';
+                document.getElementById('voiceNextContainer').style.gap = '14px';
+                document.getElementById('voiceNextContainer').style.marginTop = '20px';
 
                 clearInterval(timerInterval);
                 stream.getTracks().forEach(t => t.stop());
-
-                // Make buttons fixed at bottom so they're always reachable (esp. in Wix iframe)
-                document.getElementById('voiceNextContainer').classList.add('fixed-bottom');
-                document.querySelector('.voice-section').classList.add('has-fixed-buttons');
 
                 // Notify parent iframe of new height
                 sendHeightToParent();
@@ -1588,9 +1587,8 @@ async function toggleRecording() {
             document.getElementById('recordBtn').style.opacity = '0.4';
             document.getElementById('recordBtn').style.pointerEvents = 'none';
             document.getElementById('recordLabel').textContent = 'Microphone unavailable';
-            // Make skip button fixed at bottom (esp. in Wix iframe)
-            document.getElementById('voiceSkipContainer').classList.add('fixed-bottom');
-            document.querySelector('.voice-section').classList.add('has-fixed-buttons');
+            document.getElementById('voiceSkipContainer').style.marginTop = '20px';
+            document.getElementById('voiceSkipContainer').style.justifyContent = 'center';
         }
     } else if (btn.classList.contains('recording')) {
         mediaRecorder.stop();
