@@ -1708,16 +1708,16 @@ function getNextClassInfo() {
     // Date display
     const dateStr = nextSun.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 
-    // Calculate Israel timezone offset dynamically (handles DST)
+    // Calculate New York timezone offset dynamically (handles DST)
     const refDateStr = nextSun.toLocaleDateString('en-CA'); // YYYY-MM-DD
     const testDate = new Date(refDateStr + 'T12:00:00Z');
-    const israelHourStr = testDate.toLocaleString('en-US', {timeZone: 'Asia/Jerusalem', hour: 'numeric', hour12: false});
-    const israelHour = parseInt(israelHourStr);
-    const offset = israelHour - 12; // hours ahead of UTC
+    const nyHourStr = testDate.toLocaleString('en-US', {timeZone: 'America/New_York', hour: 'numeric', hour12: false});
+    const nyHour = parseInt(nyHourStr);
+    const offset = nyHour - 12; // hours ahead of UTC (negative for NY)
 
-    // Create UTC dates for 17:45 and 20:00 Israel time
-    const startH = 17 - offset;
-    const endH = 20 - offset;
+    // Create UTC dates for 10:45 AM and 1:00 PM New York time
+    const startH = 10 - offset;
+    const endH = 13 - offset;
     const startUTC = new Date(refDateStr + 'T' + String(startH).padStart(2,'0') + ':45:00Z');
     const endUTC = new Date(refDateStr + 'T' + String(endH).padStart(2,'0') + ':00:00Z');
 
@@ -1728,12 +1728,12 @@ function getNextClassInfo() {
     const tzParts = Intl.DateTimeFormat().resolvedOptions().timeZone.split('/');
     const localTZ = tzParts[tzParts.length - 1].replace(/_/g, ' ');
 
-    // Google Calendar URL (times in Israel timezone, Google converts automatically)
+    // Google Calendar URL (times in New York timezone, Google converts automatically)
     const gcalDate = refDateStr.replace(/-/g, '');
     const gcalUrl = 'https://calendar.google.com/calendar/event?action=TEMPLATE' +
         '&text=' + encodeURIComponent('Ivrit with a Beat - Free Trial Class') +
-        '&dates=' + gcalDate + 'T174500/' + gcalDate + 'T200000' +
-        '&ctz=Asia/Jerusalem' +
+        '&dates=' + gcalDate + 'T104500/' + gcalDate + 'T130000' +
+        '&ctz=America/New_York' +
         '&details=' + encodeURIComponent('Join us for a free Hebrew trial class through Israeli music! 🎶\n\nZoom link: https://us06web.zoom.us/j/86176331553?pwd=b0BpdEzrCMnburtqK0bnL7Y0kn7MSO.1');
 
     return {
@@ -1805,7 +1805,7 @@ function showResults() {
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                 Add to Google Calendar
             </a>
-            <div style="font-size:12px;color:#aaa;margin-top:12px;">5:45 PM – 8:00 PM Israel Time</div>
+            <div style="font-size:12px;color:#aaa;margin-top:12px;">10:45 AM – 1:00 PM ET</div>
         </div>
 
         <div style="width:100%;height:1px;background:#eee;margin:5px 0 25px;"></div>
