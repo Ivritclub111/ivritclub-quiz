@@ -720,6 +720,8 @@
                     <div style="font-size:18px; font-weight:600; color:#2e7d32;" id="welcomeName"></div>
                     <div style="font-size:14px; color:#666; margin-top:4px;">Your details are ready. Let's find your level!</div>
                 </div>
+                <!-- Honeypot field — hidden from humans, bots auto-fill it -->
+                <input type="text" name="website" id="hp_website" autocomplete="off" tabindex="-1" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;">
                 <div class="btn-container">
                     <button class="btn btn-primary" onclick="startQuiz()">Let's Go! →</button>
                 </div>
@@ -1146,9 +1148,8 @@ if (fromExternalForm && !fromLandingPage) {
             '<div style="font-size:20px; font-weight:600; color:#2e7d32;">Welcome!</div>' +
             '<div style="font-size:15px; color:#666; margin-top:6px;">Ready to find out your Hebrew level?</div>';
     }
-    // Register lead on page load (even before clicking Let's Go!)
-    // Use setTimeout to ensure APPS_SCRIPT_URL const is initialized first
-    setTimeout(() => registerStudent(), 100);
+    // Registration happens in startQuiz() — no need to call here
+    // (calling here caused duplicate rows when startQuiz also called it)
 }
 
 // ==========================================
@@ -1156,12 +1157,23 @@ if (fromExternalForm && !fromLandingPage) {
 // ==========================================
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyAStXyaD96ypbsyOxr7qaIn5EqsHNRqc1DkRE1-BSyfSnlx3EmDPL3paXJF1PQzgEd6g/exec';
 
+// Anti-bot: record page load time
+const _pageLoadTs = Date.now();
+let _registered = false; // prevent duplicate registration calls
+
 // ==========================================
-// REGISTER LEAD (sends immediately when quiz starts)
+// REGISTER LEAD (sends once when quiz starts)
 // ==========================================
 function registerStudent() {
+    if (_registered) return; // already sent — don't create duplicates
     if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'PASTE_YOUR_APPS_SCRIPT_URL_HERE') return;
     if (!studentEmail && !studentName) return; // nothing to register
+
+    _registered = true; // mark as sent BEFORE the fetch
+
+    // Read honeypot value from DOM (bots auto-fill this hidden field)
+    const hpField = document.getElementById('hp_website');
+    const hpValue = hpField ? hpField.value : '';
 
     const payload = {
         action: 'register',
@@ -1170,7 +1182,9 @@ function registerStudent() {
         email: studentEmail,
         phone: studentPhone,
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        source: quizSource || 'direct'
+        source: quizSource || 'direct',
+        _hp_website: hpValue,  // honeypot — bots fill this, humans don't see it
+        _ts: _pageLoadTs  // timestamp — bots submit too fast
     };
 
     // Fire and forget — don't block the quiz
@@ -1676,7 +1690,9 @@ async function submitResults(levelName, levelHebrew, pct) {
             recordings: audioData,
             timestamp: new Date().toISOString(),
             timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-            source: quizSource || 'direct'
+            source: quizSource || 'direct',
+            _hp_website: (document.getElementById('hp_website') || {}).value || '',
+            _ts: _pageLoadTs
         };
 
         const response = await fetch(APPS_SCRIPT_URL, {
@@ -1715,11 +1731,11 @@ function getNextClassInfo() {
     const nyHour = parseInt(nyHourStr);
     const offset = nyHour - 12; // hours ahead of UTC (negative for NY)
 
-    // Create UTC dates for 10:45 AM and 1:00 PM New York time
+    // Create UTC dates for 10:30 AM and 1:15 PM New York time
     const startH = 10 - offset;
     const endH = 13 - offset;
-    const startUTC = new Date(refDateStr + 'T' + String(startH).padStart(2,'0') + ':45:00Z');
-    const endUTC = new Date(refDateStr + 'T' + String(endH).padStart(2,'0') + ':00:00Z');
+    const startUTC = new Date(refDateStr + 'T' + String(startH).padStart(2,'0') + ':30:00Z');
+    const endUTC = new Date(refDateStr + 'T' + String(endH).padStart(2,'0') + ':15:00Z');
 
     // Display in user's local timezone
     const timeOpts = { hour: 'numeric', minute: '2-digit', hour12: true };
@@ -1732,7 +1748,7 @@ function getNextClassInfo() {
     const gcalDate = refDateStr.replace(/-/g, '');
     const gcalUrl = 'https://calendar.google.com/calendar/event?action=TEMPLATE' +
         '&text=' + encodeURIComponent('Ivrit with a Beat - Free Trial Class') +
-        '&dates=' + gcalDate + 'T104500/' + gcalDate + 'T130000' +
+        '&dates=' + gcalDate + 'T103000/' + gcalDate + 'T131500' +
         '&ctz=America/New_York' +
         '&details=' + encodeURIComponent('Join us for a free Hebrew trial class through Israeli music! 🎶\n\nZoom link: https://us06web.zoom.us/j/86176331553?pwd=b0BpdEzrCMnburtqK0bnL7Y0kn7MSO.1');
 
@@ -1805,7 +1821,7 @@ function showResults() {
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
                 Add to Google Calendar
             </a>
-            <div style="font-size:12px;color:#aaa;margin-top:12px;">10:45 AM – 1:00 PM ET</div>
+            <div style="font-size:12px;color:#aaa;margin-top:12px;">10:30 AM – 1:15 PM ET</div>
         </div>
 
         <div style="width:100%;height:1px;background:#eee;margin:5px 0 25px;"></div>
