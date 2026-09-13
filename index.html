@@ -1720,15 +1720,15 @@ async function submitResults(levelName, levelHebrew, pct) {
 // ==========================================
 // FREE MONTH MODE — 13.9.2026 (קמפיין «שנה טובה»)
 // כל מי שמסיים את המבחן מוזמן לחודש חינם שמתחיל ביום ראשון 4.10.2026,
-// 11:00–13:00 ET — לא לשיעור ניסיון ביום ראשון הקרוב.
+// 10:30–13:00 ET — לא לשיעור ניסיון ביום ראשון הקרוב.
 // ⚠️ בתחילת אוקטובר: FREE_MONTH_MODE=false (או לעדכן תאריך/שעות) + push ל-GitHub Pages.
 // חייב להיות תואם ל-email-automation.gs (FREE_MONTH_MODE / PROGRAM_START_DATE / CLASS_START_NY).
 // ==========================================
 const FREE_MONTH_MODE = true;
 const PROGRAM_START_DATE = '2026-10-04';   // YYYY-MM-DD
-const CLASS_START_NY = { h: 11, m: 0 };    // 11:00 AM ET
+const CLASS_START_NY = { h: 10, m: 30 };   // 10:30 AM ET
 const CLASS_END_NY   = { h: 13, m: 0 };    // 1:00 PM ET
-const CLASS_TIME_ET_LABEL = '11:00 AM – 1:00 PM ET';
+const CLASS_TIME_ET_LABEL = '10:30 AM – 1:00 PM ET';
 
 function getNextClassInfo() {
     // Find next Sunday
