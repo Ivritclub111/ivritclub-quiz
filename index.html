@@ -711,6 +711,7 @@
                     <div class="name-input-group">
                         <label for="studentEmailInput">Email address</label>
                         <input type="email" id="studentEmailInput" placeholder="your@email.com" autocomplete="email">
+                        <div class="name-error" id="emailError">Please check your email address</div>
                     </div>
                     <div class="name-input-group">
                         <label for="studentPhoneInput">Phone number *</label>
@@ -1090,7 +1091,7 @@ let userAnswers = [];
 
 // Read URL parameters (passed from Wix landing page form)
 const urlParams = new URLSearchParams(window.location.search);
-const fromLandingPage = urlParams.get('name') && urlParams.get('email');
+const fromLandingPage = urlParams.get('name') && isValidEmail((urlParams.get('email') || '').trim()); // isValidEmail is hoisted, defined below
 
 // Detect source: check own URL first, then parent page referrer (for iframe embed)
 let quizSource = urlParams.get('source') || '';
@@ -1100,7 +1101,15 @@ if (!quizSource && document.referrer) {
         quizSource = referrerParams.get('source') || '';
     } catch(e) {}
 }
-const fromExternalForm = quizSource === 'music' || quizSource === 'masterclass';
+// A real address only (22.10.2026: someone typed partial emails into the quiz link by hand
+// — "miromaba", "miromabama405@gmail." — and each one became a lead row).
+function isValidEmail(email) {
+    return /^[^\s@"'<>(),;:\\]+@[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}$/.test(email || '');
+}
+const urlEmail = (urlParams.get('email') || '').trim();
+// Skip our own form only when the link carries a real email (or none at all, as before).
+// A broken email in the link falls back to the normal form so a real person can fix it.
+const fromExternalForm = (quizSource === 'music' || quizSource === 'masterclass') && (!urlEmail || isValidEmail(urlEmail));
 
 if (urlParams.get('name')) {
     document.getElementById('studentNameInput').value = urlParams.get('name');
@@ -1138,9 +1147,10 @@ if (fromExternalForm && !fromLandingPage) {
     if (fname) {
         // Personalized welcome with name from form
         const fullName = fname + (lname ? ' ' + lname : '');
+        const safeName = fullName.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); // the name comes from the URL — never as HTML
         document.getElementById('welcomeAutoMsg').innerHTML =
             '<div style="font-size:36px; margin-bottom:8px;">👋</div>' +
-            '<div style="font-size:20px; font-weight:600; color:#2e7d32;">Welcome, ' + fullName + '!</div>' +
+            '<div style="font-size:20px; font-weight:600; color:#2e7d32;">Welcome, ' + safeName + '!</div>' +
             '<div style="font-size:15px; color:#666; margin-top:6px;">Ready to find out your Hebrew level?</div>';
         studentName = fname;
         studentLastName = lname;
@@ -1263,6 +1273,20 @@ function startQuiz() {
     } else if (phoneError) {
         phoneError.style.display = 'none';
         if (phoneInput) phoneInput.style.borderColor = '#ddd';
+    }
+
+    // Validate email — optional, but if typed it must be a real address
+    const emailField = document.getElementById('studentEmailInput');
+    const emailError = document.getElementById('emailError');
+    const typedEmail = emailField ? emailField.value.trim() : '';
+    if (typedEmail && !isValidEmail(typedEmail)) {
+        emailError.style.display = 'block';
+        emailField.style.borderColor = '#c0392b';
+        if (!hasError) emailField.focus();
+        hasError = true;
+    } else if (emailError) {
+        emailError.style.display = 'none';
+        if (emailField) emailField.style.borderColor = '#ddd';
     }
 
     if (hasError) return;
